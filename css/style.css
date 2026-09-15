@@ -627,13 +627,11 @@ body {
 .goal-name { display: block; font-weight: 700; }
 .goal-note { display: block; color: var(--text-faint); font-size: 0.75rem; }
 
-.goal-table tr.is-maint td,
-.goal-table tr.is-highlight td {
+.goal-table tr.is-maint td {
   background: rgba(200, 255, 46, 0.05);
 }
 
-.goal-table tr.is-maint td:first-child,
-.goal-table tr.is-highlight td:first-child {
+.goal-table tr.is-maint td:first-child {
   border-left: 3px solid var(--accent);
   padding-left: 10px;
 }

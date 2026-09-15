@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FitCalc — Gym Fitness Calculators</title>
-  <meta name="description" content="A collection of gym-focused fitness calculators: BMI, BMR & TDEE, 1-Rep Max, heart rate zones, and macro split." />
+  <meta name="description" content="A collection of gym-focused fitness calculators: BMI, BMR & TDEE, heart rate zones, and macro split." />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -30,7 +30,6 @@
       <a href="#/overview" class="nav-tab" data-route="overview">Overview</a>
       <a href="#/bmi"        class="nav-tab" data-route="bmi">BMI</a>
       <a href="#/bmr"        class="nav-tab" data-route="bmr">BMR &amp; TDEE</a>
-      <a href="#/onerm"      class="nav-tab" data-route="onerm">1-Rep Max</a>
       <a href="#/hrzones"    class="nav-tab" data-route="hrzones">HR Zones</a>
       <a href="#/macros"     class="nav-tab" data-route="macros">Macros</a>
     </div>
@@ -42,7 +41,7 @@
     <!-- Overview -->
     <section class="route" id="route-overview" data-route="overview">
       <h1 class="page-title">Your Gym Toolkit</h1>
-      <p class="page-subtitle">Five calculators, built step by step. Each one goes live as we add it.</p>
+      <p class="page-subtitle">Four calculators, built step by step. Each one goes live as we add it.</p>
 
       <div class="calc-grid">
         <a class="calc-card is-live" href="#/bmi">
@@ -54,11 +53,6 @@
           <div class="calc-card-status is-live">Live</div>
           <h2>BMR &amp; TDEE</h2>
           <p>Mifflin-St Jeor BMR and maintenance calories from kg + inches, with cut/bulk targets and estimated weekly change.</p>
-        </a>
-        <a class="calc-card is-live" href="#/onerm">
-          <div class="calc-card-status is-live">Live</div>
-          <h2>1-Rep Max</h2>
-          <p>Estimated one-rep max in kg from a working set — Epley + Brzycki cross-check, plus a % loading table.</p>
         </a>
         <a class="calc-card is-live" href="#/hrzones">
           <div class="calc-card-status is-live">Live</div>
@@ -223,68 +217,6 @@
             <div class="warn-note" id="bmr-warn" hidden></div>
 
             <p class="disclaimer">Estimates assume 1 kg of body tissue ≈ 7,700 kcal. Real-world results vary ±10% — track your weight for 2 weeks and adjust.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 1-Rep Max -->
-    <section class="route" id="route-onerm" data-route="onerm" hidden>
-      <h1 class="page-title">1-Rep Max Estimator</h1>
-      <p class="page-subtitle">Estimate your true one-rep max from a heavy working set. Weight in <strong>kg</strong>.</p>
-
-      <div class="calc-layout">
-        <!-- Form -->
-        <div class="panel">
-          <form id="orm-form" novalidate>
-            <div class="field-row">
-              <div class="field">
-                <label for="orm-weight">Weight lifted (kg)</label>
-                <input type="number" id="orm-weight" min="1" max="500" step="0.5" placeholder="e.g. 100" inputmode="decimal" />
-              </div>
-              <div class="field">
-                <label for="orm-reps">Reps performed</label>
-                <input type="number" id="orm-reps" min="1" max="30" step="1" placeholder="e.g. 5" inputmode="numeric" />
-              </div>
-            </div>
-            <p class="hint">Use a set taken close to failure — estimates are most accurate at 10 reps or fewer.</p>
-            <button type="submit" class="btn-primary">Estimate 1RM</button>
-            <div class="error-msg" id="orm-error" hidden></div>
-          </form>
-        </div>
-
-        <!-- Results -->
-        <div class="panel">
-          <div class="result-empty" id="orm-empty">
-            <p>Enter the weight and reps from a hard set to estimate your <strong>1-rep max</strong> and get a percentage-based loading table.</p>
-          </div>
-
-          <div id="orm-output" hidden>
-            <div class="result-hero">
-              <div class="value"><span id="orm-epley">—</span><span class="unit">kg</span></div>
-              <div class="label">Estimated 1-rep max (Epley)</div>
-            </div>
-
-            <div class="result-row">
-              <span class="k">Brzycki cross-check</span>
-              <span class="v"><span id="orm-brzycki">—</span> kg</span>
-            </div>
-            <div class="result-row">
-              <span class="k">Likely range</span>
-              <span class="v" id="orm-range">—</span>
-            </div>
-
-            <h3 class="results-heading">Loading table</h3>
-            <table class="goal-table">
-              <thead>
-                <tr><th>% of 1RM</th><th class="num">Weight (kg)</th><th class="num">Est. reps</th></tr>
-              </thead>
-              <tbody id="orm-table"></tbody>
-            </table>
-
-            <div class="warn-note" id="orm-warn" hidden></div>
-
-            <p class="disclaimer">The two formulas diverge above ~10 reps — treat high-rep estimates as rough. Table weights rounded to the nearest 0.5 kg.</p>
           </div>
         </div>
       </div>
@@ -479,7 +411,6 @@
   <script src="js/app.js"></script>
   <script src="js/bmi.js"></script>
   <script src="js/bmr.js"></script>
-  <script src="js/onerm.js"></script>
   <script src="js/hrzones.js"></script>
   <script src="js/macros.js"></script>
 </body>
