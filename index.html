@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitCalc — Gym Fitness Calculators</title>
+  <meta name="description" content="A collection of gym-focused fitness calculators: BMI, BMR & TDEE, 1-Rep Max, heart rate zones, and macro split." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#/overview">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <path d="M6.5 6.5v11M3.5 9v5M17.5 6.5v11M20.5 9v5M6.5 12h11"/>
+          </svg>
+        </span>
+        <span class="brand-text">FIT<em>CALC</em></span>
+      </a>
+      <p class="brand-tagline">Train smarter. Numbers first.</p>
+    </div>
+  </header>
+
+  <!-- ============ NAV ============ -->
+  <nav class="site-nav" aria-label="Calculators">
+    <div class="container nav-inner" id="nav-tabs">
+      <a href="#/overview" class="nav-tab" data-route="overview">Overview</a>
+      <a href="#/bmi"        class="nav-tab" data-route="bmi">BMI</a>
+      <a href="#/bmr"        class="nav-tab" data-route="bmr">BMR &amp; TDEE</a>
+      <a href="#/onerm"      class="nav-tab" data-route="onerm">1-Rep Max</a>
+      <a href="#/hrzones"    class="nav-tab" data-route="hrzones">HR Zones</a>
+      <a href="#/macros"     class="nav-tab" data-route="macros">Macros</a>
+    </div>
+  </nav>
+
+  <!-- ============ MAIN ============ -->
+  <main class="container main-content">
+
+    <!-- Overview -->
+    <section class="route" id="route-overview" data-route="overview">
+      <h1 class="page-title">Your Gym Toolkit</h1>
+      <p class="page-subtitle">Five calculators, built step by step. Each one goes live as we add it.</p>
+
+      <div class="calc-grid">
+        <a class="calc-card is-live" href="#/bmi">
+          <div class="calc-card-status is-live">Live</div>
+          <h2>BMI</h2>
+          <p>Body Mass Index from weight (kg) and height (inches) — with category gauge and healthy weight range.</p>
+        </a>
+        <a class="calc-card is-live" href="#/bmr">
+          <div class="calc-card-status is-live">Live</div>
+          <h2>BMR &amp; TDEE</h2>
+          <p>Mifflin-St Jeor BMR and maintenance calories from kg + inches, with cut/bulk targets and estimated weekly change.</p>
+        </a>
+        <a class="calc-card is-live" href="#/onerm">
+          <div class="calc-card-status is-live">Live</div>
+          <h2>1-Rep Max</h2>
+          <p>Estimated one-rep max in kg from a working set — Epley + Brzycki cross-check, plus a % loading table.</p>
+        </a>
+        <a class="calc-card is-live" href="#/hrzones">
+          <div class="calc-card-status is-live">Live</div>
+          <h2>Heart Rate Zones</h2>
+          <p>Z1–Z5 target zones from age (Tanaka max HR) or a known max — with optional Karvonen HRR method.</p>
+        </a>
+        <a class="calc-card is-live" href="#/macros">
+          <div class="calc-card-status is-live">Live</div>
+          <h2>Macro Split</h2>
+          <p>Protein / carbs / fat grams from your daily calories, weight (kg) and goal — cut, maintain, or lean bulk.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- BMI -->
+    <section class="route" id="route-bmi" data-route="bmi" hidden>
+      <h1 class="page-title">BMI Calculator</h1>
+      <p class="page-subtitle">Body Mass Index — weight relative to height. Units: weight in <strong>kg</strong>, height in <strong>inches</strong>.</p>
+
+      <div class="calc-layout">
+        <!-- Form -->
+        <div class="panel">
+          <form id="bmi-form" novalidate>
+            <div class="field">
+              <label for="bmi-weight">Weight (kg)</label>
+              <input type="number" id="bmi-weight" min="20" max="400" step="0.1" placeholder="e.g. 78.5" inputmode="decimal" />
+            </div>
+            <div class="field">
+              <label for="bmi-height">Height (inches)</label>
+              <input type="number" id="bmi-height" min="36" max="96" step="0.1" placeholder="e.g. 69" inputmode="decimal" />
+            </div>
+            <p class="hint">Think in feet? Total inches = (ft × 12) + in — e.g. 5'9&quot; = 69&quot;.</p>
+            <button type="submit" class="btn-primary">Calculate BMI</button>
+            <div class="error-msg" id="bmi-error" hidden></div>
+          </form>
+        </div>
+
+        <!-- Results -->
+        <div class="panel">
+          <div class="result-empty" id="bmi-empty">
+            <p>Enter your weight and height, then hit <strong>Calculate BMI</strong> to see your score, category and healthy weight range.</p>
+          </div>
+
+          <div id="bmi-output" hidden>
+            <div class="result-hero">
+              <div class="value" id="bmi-value">—</div>
+              <div class="label">BMI (kg/m²) · <span id="bmi-category">—</span></div>
+            </div>
+
+            <div class="bmi-gauge" aria-hidden="true">
+              <span class="seg seg-under"  style="width: 14%"></span>
+              <span class="seg seg-normal" style="width: 26%"></span>
+              <span class="seg seg-over"   style="width: 20%"></span>
+              <span class="seg seg-obese"  style="width: 40%"></span>
+              <span class="gauge-marker" id="bmi-marker" style="left: 0%"></span>
+            </div>
+            <div class="gauge-labels" aria-hidden="true">
+              <span>15</span><span>18.5</span><span>25</span><span>30</span><span>40+</span>
+            </div>
+
+            <div class="result-row">
+              <span class="k">Healthy weight for your height</span>
+              <span class="v" id="bmi-healthy-range">—</span>
+            </div>
+            <div class="result-row">
+              <span class="k">Distance to healthy range</span>
+              <span class="v" id="bmi-distance">—</span>
+            </div>
+
+            <p class="disclaimer">BMI is a population screening tool — it doesn't distinguish muscle from fat, so very muscular lifters often score "overweight".</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BMR & TDEE -->
+    <section class="route" id="route-bmr" data-route="bmr" hidden>
+      <h1 class="page-title">BMR &amp; TDEE</h1>
+      <p class="page-subtitle">Mifflin-St Jeor equation. Units: weight in <strong>kg</strong>, height in <strong>inches</strong>.</p>
+
+      <div class="calc-layout">
+        <!-- Form -->
+        <div class="panel">
+          <form id="bmr-form" novalidate>
+            <div class="field">
+              <label>Sex</label>
+              <div class="seg-choice">
+                <label class="seg-option">
+                  <input type="radio" name="bmr-sex" value="male" checked />
+                  <span>Male</span>
+                </label>
+                <label class="seg-option">
+                  <input type="radio" name="bmr-sex" value="female" />
+                  <span>Female</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="bmr-age">Age (years)</label>
+                <input type="number" id="bmr-age" min="15" max="100" step="1" placeholder="e.g. 28" inputmode="numeric" />
+              </div>
+              <div class="field">
+                <label for="bmr-weight">Weight (kg)</label>
+                <input type="number" id="bmr-weight" min="20" max="400" step="0.1" placeholder="e.g. 78.5" inputmode="decimal" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="bmr-height">Height (inches)</label>
+              <input type="number" id="bmr-height" min="36" max="96" step="0.1" placeholder="e.g. 69" inputmode="decimal" />
+            </div>
+
+            <div class="field">
+              <label for="bmr-activity">Activity level</label>
+              <select id="bmr-activity">
+                <option value="1.2">Sedentary — desk job, little or no exercise</option>
+                <option value="1.375">Light — training 1–3 days/week</option>
+                <option value="1.55" selected>Moderate — training 3–5 days/week</option>
+                <option value="1.725">Very active — training 6–7 days/week</option>
+                <option value="1.9">Athlete — twice-daily training or physical job</option>
+              </select>
+            </div>
+
+            <p class="hint">Think in feet? Total inches = (ft × 12) + in — e.g. 5'9&quot; = 69&quot;.</p>
+            <button type="submit" class="btn-primary">Calculate Calories</button>
+            <div class="error-msg" id="bmr-error" hidden></div>
+          </form>
+        </div>
+
+        <!-- Results -->
+        <div class="panel">
+          <div class="result-empty" id="bmr-empty">
+            <p>Fill in the form to see your <strong>BMR</strong>, daily <strong>maintenance calories (TDEE)</strong>, and calorie targets for cutting or bulking.</p>
+          </div>
+
+          <div id="bmr-output" hidden>
+            <div class="result-hero">
+              <div class="value"><span id="bmr-tdee">—</span><span class="unit">kcal/day</span></div>
+              <div class="label">Maintenance calories (TDEE)</div>
+            </div>
+
+            <div class="result-row">
+              <span class="k">BMR — burn at complete rest</span>
+              <span class="v"><span id="bmr-bmr">—</span> kcal</span>
+            </div>
+            <div class="result-row">
+              <span class="k">Activity burn (TDEE − BMR)</span>
+              <span class="v"><span id="bmr-activity-burn">—</span> kcal</span>
+            </div>
+
+            <h3 class="results-heading">Targets by goal</h3>
+            <table class="goal-table">
+              <thead>
+                <tr><th>Goal</th><th class="num">Calories</th><th class="num rate-col">Est. change</th><th class="num">Send</th></tr>
+              </thead>
+              <tbody id="bmr-goals"></tbody>
+            </table>
+            <p class="hint table-hint">Tap <strong>→</strong> to send any target to the Macro Split calculator — your weight carries over too.</p>
+
+            <div class="warn-note" id="bmr-warn" hidden></div>
+
+            <p class="disclaimer">Estimates assume 1 kg of body tissue ≈ 7,700 kcal. Real-world results vary ±10% — track your weight for 2 weeks and adjust.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1-Rep Max -->
+    <section class="route" id="route-onerm" data-route="onerm" hidden>
+      <h1 class="page-title">1-Rep Max Estimator</h1>
+      <p class="page-subtitle">Estimate your true one-rep max from a heavy working set. Weight in <strong>kg</strong>.</p>
+
+      <div class="calc-layout">
+        <!-- Form -->
+        <div class="panel">
+          <form id="orm-form" novalidate>
+            <div class="field-row">
+              <div class="field">
+                <label for="orm-weight">Weight lifted (kg)</label>
+                <input type="number" id="orm-weight" min="1" max="500" step="0.5" placeholder="e.g. 100" inputmode="decimal" />
+              </div>
+              <div class="field">
+                <label for="orm-reps">Reps performed</label>
+                <input type="number" id="orm-reps" min="1" max="30" step="1" placeholder="e.g. 5" inputmode="numeric" />
+              </div>
+            </div>
+            <p class="hint">Use a set taken close to failure — estimates are most accurate at 10 reps or fewer.</p>
+            <button type="submit" class="btn-primary">Estimate 1RM</button>
+            <div class="error-msg" id="orm-error" hidden></div>
+          </form>
+        </div>
+
+        <!-- Results -->
+        <div class="panel">
+          <div class="result-empty" id="orm-empty">
+            <p>Enter the weight and reps from a hard set to estimate your <strong>1-rep max</strong> and get a percentage-based loading table.</p>
+          </div>
+
+          <div id="orm-output" hidden>
+            <div class="result-hero">
+              <div class="value"><span id="orm-epley">—</span><span class="unit">kg</span></div>
+              <div class="label">Estimated 1-rep max (Epley)</div>
+            </div>
+
+            <div class="result-row">
+              <span class="k">Brzycki cross-check</span>
+              <span class="v"><span id="orm-brzycki">—</span> kg</span>
+            </div>
+            <div class="result-row">
+              <span class="k">Likely range</span>
+              <span class="v" id="orm-range">—</span>
+            </div>
+
+            <h3 class="results-heading">Loading table</h3>
+            <table class="goal-table">
+              <thead>
+                <tr><th>% of 1RM</th><th class="num">Weight (kg)</th><th class="num">Est. reps</th></tr>
+              </thead>
+              <tbody id="orm-table"></tbody>
+            </table>
+
+            <div class="warn-note" id="orm-warn" hidden></div>
+
+            <p class="disclaimer">The two formulas diverge above ~10 reps — treat high-rep estimates as rough. Table weights rounded to the nearest 0.5 kg.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HR Zones -->
+    <section class="route" id="route-hrzones" data-route="hrzones" hidden>
+      <h1 class="page-title">Heart Rate Zones</h1>
+      <p class="page-subtitle">Target training zones Z1–Z5 — train the right energy system for the adaptation you want.</p>
+
+      <div class="calc-layout">
+        <!-- Form -->
+        <div class="panel">
+          <form id="hr-form" novalidate>
+            <div class="field">
+              <label>Method</label>
+              <div class="seg-choice">
+                <label class="seg-option">
+                  <input type="radio" name="hr-method" value="max" checked />
+                  <span>% of Max HR</span>
+                </label>
+                <label class="seg-option">
+                  <input type="radio" name="hr-method" value="karvonen" />
+                  <span>Karvonen (HRR)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="hr-age">Age (years)</label>
+                <input type="number" id="hr-age" min="10" max="100" step="1" placeholder="e.g. 28" inputmode="numeric" />
+              </div>
+              <div class="field">
+                <label for="hr-resting">Resting HR (bpm) <span class="opt">Karvonen only</span></label>
+                <input type="number" id="hr-resting" min="30" max="120" step="1" placeholder="e.g. 60" inputmode="numeric" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="hr-max">Max HR override (bpm) <span class="opt">optional</span></label>
+              <input type="number" id="hr-max" min="100" max="220" step="1" placeholder="Leave blank to estimate from age" inputmode="numeric" />
+            </div>
+
+            <p class="hint">Tanaka formula: max HR = 208 − 0.68 × age. Know your true max from a field test? Override it. Resting HR is best measured lying down, first thing in the morning.</p>
+            <button type="submit" class="btn-primary">Calculate Zones</button>
+            <div class="error-msg" id="hr-error" hidden></div>
+          </form>
+        </div>
+
+        <!-- Results -->
+        <div class="panel">
+          <div class="result-empty" id="hr-empty">
+            <p>Enter your age (and resting HR for Karvonen) to get your <strong>max heart rate</strong> and five colour-coded training zones.</p>
+          </div>
+
+          <div id="hr-output" hidden>
+            <div class="result-hero">
+              <div class="value"><span id="hr-max-out">—</span><span class="unit">bpm</span></div>
+              <div class="label" id="hr-max-label">Max heart rate</div>
+            </div>
+
+            <div class="result-row">
+              <span class="k">Method</span>
+              <span class="v" id="hr-method-out">—</span>
+            </div>
+            <div class="result-row" id="hr-hrr-row" hidden>
+              <span class="k">Heart rate reserve (max − resting)</span>
+              <span class="v"><span id="hr-hrr">—</span> bpm</span>
+            </div>
+
+            <h3 class="results-heading">Training zones</h3>
+            <div class="zone-list" id="hr-zones"></div>
+
+            <p class="disclaimer">Zone boundaries are population estimates — individual physiology varies. If you take heart-rate-affecting medication (e.g. beta blockers) or have a cardiac condition, talk to a doctor before high-intensity training.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Macros -->
+    <section class="route" id="route-macros" data-route="macros" hidden>
+      <h1 class="page-title">Macro Split</h1>
+      <p class="page-subtitle">Turn a daily calorie target into protein, carbs and fat — in <strong>grams</strong>. Weight in <strong>kg</strong>.</p>
+
+      <div class="calc-layout">
+        <!-- Form -->
+        <div class="panel">
+          <form id="macro-form" novalidate>
+            <div class="field">
+              <label>Goal</label>
+              <div class="seg-choice">
+                <label class="seg-option">
+                  <input type="radio" name="macro-goal" value="cut" />
+                  <span>Cut</span>
+                </label>
+                <label class="seg-option">
+                  <input type="radio" name="macro-goal" value="maintain" checked />
+                  <span>Maintain</span>
+                </label>
+                <label class="seg-option">
+                  <input type="radio" name="macro-goal" value="bulk" />
+                  <span>Lean bulk</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="macro-calories">Daily calories (kcal)</label>
+                <input type="number" id="macro-calories" min="500" max="12000" step="10" placeholder="e.g. 2200" inputmode="numeric" />
+              </div>
+              <div class="field">
+                <label for="macro-weight">Weight (kg)</label>
+                <input type="number" id="macro-weight" min="20" max="400" step="0.1" placeholder="e.g. 78.5" inputmode="decimal" />
+              </div>
+            </div>
+
+            <p class="hint">Get your calorie number from the <a href="#/bmr">BMR &amp; TDEE</a> tab — e.g. your "moderate cut" or "lean bulk" target.</p>
+            <button type="submit" class="btn-primary">Calculate Macros</button>
+            <div class="error-msg" id="macro-error" hidden></div>
+          </form>
+        </div>
+
+        <!-- Results -->
+        <div class="panel">
+          <div class="result-empty" id="macro-empty">
+            <p>Enter your daily calorie target and weight to get <strong>protein / carbs / fat</strong> grams tuned to your goal.</p>
+          </div>
+
+          <div id="macro-output" hidden>
+            <div class="macro-cards">
+              <div class="macro-card m-protein">
+                <div class="m-name">Protein</div>
+                <div class="grams"><span id="macro-protein-g">—</span><span class="g">g</span></div>
+                <div class="m-kcal"><span id="macro-protein-kcal">—</span> kcal · <span id="macro-protein-pct">—</span>%</div>
+              </div>
+              <div class="macro-card m-carbs">
+                <div class="m-name">Carbs</div>
+                <div class="grams"><span id="macro-carbs-g">—</span><span class="g">g</span></div>
+                <div class="m-kcal"><span id="macro-carbs-kcal">—</span> kcal · <span id="macro-carbs-pct">—</span>%</div>
+              </div>
+              <div class="macro-card m-fat">
+                <div class="m-name">Fat</div>
+                <div class="grams"><span id="macro-fat-g">—</span><span class="g">g</span></div>
+                <div class="m-kcal"><span id="macro-fat-kcal">—</span> kcal · <span id="macro-fat-pct">—</span>%</div>
+              </div>
+            </div>
+
+            <div class="split-bar" aria-hidden="true">
+              <span class="sb-protein" id="macro-bar-protein" style="width: 33%"></span>
+              <span class="sb-carbs" id="macro-bar-carbs" style="width: 34%"></span>
+              <span class="sb-fat" id="macro-bar-fat" style="width: 33%"></span>
+            </div>
+            <div class="split-legend" aria-hidden="true">
+              <span><i class="lg-protein"></i>Protein · 4 kcal/g</span>
+              <span><i class="lg-carbs"></i>Carbs · 4 kcal/g</span>
+              <span><i class="lg-fat"></i>Fat · 9 kcal/g</span>
+            </div>
+
+            <div class="result-row">
+              <span class="k">Protein rule</span>
+              <span class="v" id="macro-protein-note">—</span>
+            </div>
+            <div class="result-row">
+              <span class="k">Fat rule</span>
+              <span class="v" id="macro-fat-note">—</span>
+            </div>
+            <div class="result-row">
+              <span class="k">Carbs rule</span>
+              <span class="v" id="macro-carb-note">—</span>
+            </div>
+
+            <div class="warn-note" id="macro-warn" hidden></div>
+
+            <p class="disclaimer">General sports-nutrition defaults: protein 1.6–2.2 g/kg by goal, fat ~25–28% of calories, carbs fill the remainder. Adjust to preference, performance and how you feel.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>FitCalc — educational tool, not medical advice.</p>
+      <p class="footer-step">Units: weight in kg &nbsp;·&nbsp; height in inches</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/bmi.js"></script>
+  <script src="js/bmr.js"></script>
+  <script src="js/onerm.js"></script>
+  <script src="js/hrzones.js"></script>
+  <script src="js/macros.js"></script>
+</body>
+</html>
