@@ -32,6 +32,7 @@
       <a href="#/bmr"        class="nav-tab" data-route="bmr">BMR &amp; TDEE</a>
       <a href="#/hrzones"    class="nav-tab" data-route="hrzones">HR Zones</a>
       <a href="#/macros"     class="nav-tab" data-route="macros">Macros</a>
+      <a href="#/water"      class="nav-tab" data-route="water">Water</a>
     </div>
   </nav>
 
@@ -41,7 +42,7 @@
     <!-- Overview -->
     <section class="route" id="route-overview" data-route="overview">
       <h1 class="page-title">Your Gym Toolkit</h1>
-      <p class="page-subtitle">Four calculators, built step by step. Each one goes live as we add it.</p>
+      <p class="page-subtitle">Five calculators, built step by step. Each one goes live as we add it.</p>
 
       <div class="calc-grid">
         <a class="calc-card is-live" href="#/bmi">
@@ -63,6 +64,11 @@
           <div class="calc-card-status is-live">Live</div>
           <h2>Macro Split</h2>
           <p>Protein / carbs / fat grams from your daily calories, weight (kg) and goal — cut, maintain, or lean bulk.</p>
+        </a>
+        <a class="calc-card is-live" href="#/water">
+          <div class="calc-card-status is-live">Live</div>
+          <h2>Water Intake</h2>
+          <p>Daily hydration target in litres from your weight, training minutes and climate — with glass &amp; bottle equivalents.</p>
         </a>
       </div>
     </section>
@@ -398,6 +404,78 @@
       </div>
     </section>
 
+    <!-- Water -->
+    <section class="route" id="route-water" data-route="water" hidden>
+      <h1 class="page-title">Water Intake</h1>
+      <p class="page-subtitle">Daily hydration target from your weight and training — in <strong>litres</strong>. Weight in <strong>kg</strong>.</p>
+
+      <div class="calc-layout">
+        <!-- Form -->
+        <div class="panel">
+          <form id="water-form" novalidate>
+            <div class="field">
+              <label for="water-weight">Weight (kg)</label>
+              <input type="number" id="water-weight" min="20" max="400" step="0.1" placeholder="e.g. 78.5" inputmode="decimal" />
+            </div>
+
+            <div class="field">
+              <label for="water-workout">Training per day (minutes) <span class="opt">optional</span></label>
+              <input type="number" id="water-workout" min="0" max="300" step="5" placeholder="e.g. 60" inputmode="numeric" />
+            </div>
+
+            <div class="field">
+              <label for="water-climate">Climate</label>
+              <select id="water-climate">
+                <option value="0" selected>Temperate</option>
+                <option value="500">Hot / humid — adds 500 ml</option>
+                <option value="750">Hot &amp; dry or high altitude — adds 750 ml</option>
+              </select>
+            </div>
+
+            <p class="hint">Base rule: ~33 ml per kg of body weight. Training adds ~12 ml per minute (≈ 350 ml per 30-min session).</p>
+            <button type="submit" class="btn-primary">Calculate Water Target</button>
+            <div class="error-msg" id="water-error" hidden></div>
+          </form>
+        </div>
+
+        <!-- Results -->
+        <div class="panel">
+          <div class="result-empty" id="water-empty">
+            <p>Enter your weight to get your <strong>daily water target</strong> — in litres, glasses (250 ml) and bottles (500 ml).</p>
+          </div>
+
+          <div id="water-output" hidden>
+            <div class="result-hero">
+              <div class="value water"><span id="water-litres">—</span><span class="unit">L / day</span></div>
+              <div class="label">Daily water target</div>
+            </div>
+
+            <div class="cup-row" id="water-cups" aria-hidden="true"></div>
+            <p class="cup-caption" id="water-cup-caption">—</p>
+
+            <div class="result-row">
+              <span class="k">Base need (33 ml/kg)</span>
+              <span class="v" id="water-base">—</span>
+            </div>
+            <div class="result-row">
+              <span class="k">Training (+12 ml/min)</span>
+              <span class="v" id="water-workout-add">—</span>
+            </div>
+            <div class="result-row">
+              <span class="k">Climate adder</span>
+              <span class="v" id="water-climate-add">—</span>
+            </div>
+            <div class="result-row">
+              <span class="k">In 500 ml bottles</span>
+              <span class="v" id="water-bottles">—</span>
+            </div>
+
+            <p class="disclaimer">General guideline — individual needs vary with sweat rate, diet and health. Coffee, tea and water-rich foods also count toward intake. With a heart or kidney condition, follow your doctor's fluid advice.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- ============ FOOTER ============ -->
@@ -413,5 +491,6 @@
   <script src="js/bmr.js"></script>
   <script src="js/hrzones.js"></script>
   <script src="js/macros.js"></script>
+  <script src="js/water.js"></script>
 </body>
 </html>
