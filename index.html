@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FitCalc — Gym Fitness Calculators</title>
-  <meta name="description" content="A collection of gym-focused fitness calculators: BMI, BMR & TDEE, macro split, and water intake." />
-  <link rel="stylesheet" href="css/style.css?v=3" />
+  <meta name="description" content="A collection of gym-focused fitness calculators: BMI, BMR & TDEE, macro split, water intake, and daily steps." />
+  <link rel="stylesheet" href="css/style.css?v=4" />
 </head>
 <body>
 
@@ -32,6 +32,7 @@
       <a href="#/bmr"        class="nav-tab" data-route="bmr">BMR &amp; TDEE</a>
       <a href="#/macros"     class="nav-tab" data-route="macros">Macros</a>
       <a href="#/water"      class="nav-tab" data-route="water">Water</a>
+      <a href="#/steps"      class="nav-tab" data-route="steps">Steps</a>
     </div>
   </nav>
 
@@ -41,7 +42,7 @@
     <!-- Overview -->
     <section class="route" id="route-overview" data-route="overview">
       <h1 class="page-title">Your Gym Toolkit</h1>
-      <p class="page-subtitle">Four calculators, built step by step. Each one goes live as we add it.</p>
+      <p class="page-subtitle">Five calculators, built step by step. Each one goes live as we add it.</p>
 
       <div class="calc-grid">
         <a class="calc-card is-live" href="#/bmi">
@@ -63,6 +64,11 @@
           <div class="calc-card-status is-live">Live</div>
           <h2>Water Intake</h2>
           <p>Daily hydration target in litres from your weight, training minutes and climate — with glass &amp; bottle equivalents.</p>
+        </a>
+        <a class="calc-card is-live" href="#/steps">
+          <div class="calc-card-status is-live">Live</div>
+          <h2>Daily Steps</h2>
+          <p>Research-based daily step target from your age and goal — with distance from height and calories from weight.</p>
         </a>
       </div>
     </section>
@@ -395,6 +401,101 @@
       </div>
     </section>
 
+    <!-- Steps -->
+    <section class="route" id="route-steps" data-route="steps" hidden>
+      <h1 class="page-title">Daily Steps</h1>
+      <p class="page-subtitle">How many steps to walk every day for your age — with distance from your height (inches) and calories from your weight (kg).</p>
+
+      <div class="calc-layout">
+        <!-- Form -->
+        <div class="panel">
+          <form id="steps-form" novalidate>
+            <div class="field">
+              <label>Goal</label>
+              <div class="seg-choice">
+                <label class="seg-option">
+                  <input type="radio" name="steps-goal" value="health" checked />
+                  <span>General health</span>
+                </label>
+                <label class="seg-option">
+                  <input type="radio" name="steps-goal" value="weightloss" />
+                  <span>Weight loss</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="steps-age">Age (years)</label>
+                <input type="number" id="steps-age" min="10" max="100" step="1" placeholder="e.g. 28" inputmode="numeric" />
+              </div>
+              <div class="field">
+                <label for="steps-weight">Weight (kg)</label>
+                <input type="number" id="steps-weight" min="20" max="400" step="0.1" placeholder="e.g. 78.5" inputmode="decimal" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="steps-height">Height (inches)</label>
+              <input type="number" id="steps-height" min="36" max="96" step="0.1" placeholder="e.g. 69" inputmode="decimal" />
+            </div>
+
+            <p class="hint">Targets follow large cohort studies: benefits start around 4,400 steps/day; risk reduction plateaus at ~8,000–10,000 steps for under-60s and ~6,000–8,000 for 60+.</p>
+            <button type="submit" class="btn-primary">Calculate Steps</button>
+            <div class="error-msg" id="steps-error" hidden></div>
+          </form>
+        </div>
+
+        <!-- Results -->
+        <div class="panel">
+          <div class="result-empty" id="steps-empty">
+            <p>Enter your age, weight and height to get your <strong>daily step target</strong>, the distance it covers and the calories it burns.</p>
+          </div>
+
+          <div id="steps-output" hidden>
+            <div class="result-hero">
+              <div class="value"><span id="steps-target">—</span><span class="unit">steps/day</span></div>
+              <div class="label" id="steps-target-label">Daily step target</div>
+            </div>
+
+            <div class="steps-gauge" aria-hidden="true">
+              <span class="seg seg-low"     style="width: 29.33%" title="Under ~4,400 — sedentary range"></span>
+              <span class="seg seg-some"    style="width: 24%"    title="4,400–8,000 — health benefits start"></span>
+              <span class="seg seg-optimal" style="width: 26.67%" title="8,000–12,000 — optimal range for most adults"></span>
+              <span class="seg seg-high"    style="width: 20%"    title="12,000–15,000 — very active"></span>
+              <span class="gauge-marker" id="steps-marker" style="left: 0%"></span>
+            </div>
+            <div class="gauge-labels" aria-hidden="true">
+              <span>0</span><span>4.4k</span><span>8k</span><span>12k</span><span>15k</span>
+            </div>
+
+            <div class="result-row">
+              <span class="k">Research-backed range</span>
+              <span class="v" id="steps-range">—</span>
+            </div>
+            <div class="result-row">
+              <span class="k">Distance covered</span>
+              <span class="v" id="steps-distance">—</span>
+            </div>
+            <div class="result-row">
+              <span class="k">Your stride (from height)</span>
+              <span class="v" id="steps-stride">—</span>
+            </div>
+            <div class="result-row">
+              <span class="k">Calories burned walking these steps</span>
+              <span class="v" id="steps-kcal">—</span>
+            </div>
+            <div class="result-row">
+              <span class="k">Distance per week</span>
+              <span class="v" id="steps-week">—</span>
+            </div>
+
+            <p class="disclaimer">Calorie estimate assumes a moderate pace (~4.8 km/h) on flat ground — hills and speed change it. Step targets are population averages; any increase over your current level helps. A cadence of ~100 steps/min counts as moderate intensity.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- ============ FOOTER ============ -->
@@ -405,10 +506,11 @@
     </div>
   </footer>
 
-  <script src="js/app.js?v=3"></script>
-  <script src="js/bmi.js?v=3"></script>
-  <script src="js/bmr.js?v=3"></script>
-  <script src="js/macros.js?v=3"></script>
-  <script src="js/water.js?v=3"></script>
+  <script src="js/app.js?v=4"></script>
+  <script src="js/bmi.js?v=4"></script>
+  <script src="js/bmr.js?v=4"></script>
+  <script src="js/macros.js?v=4"></script>
+  <script src="js/water.js?v=4"></script>
+  <script src="js/steps.js?v=4"></script>
 </body>
 </html>

@@ -12,6 +12,7 @@ All calculations use fixed units: **weight in kg, height in inches**.
 | **BMR & TDEE** | Mifflin-St Jeor equation, 5 activity levels, cut/bulk calorie targets with estimated kg/week change |
 | **Macro Split** | Protein / carbs / fat grams by goal (cut · maintain · lean bulk), with safety caps and a stacked split bar |
 | **Water Intake** | Daily hydration target in litres from weight (33 ml/kg) + training minutes (+12 ml/min) + climate adder, with glass/bottle equivalents |
+| **Daily Steps** | Research-based daily step target by age and goal (health / weight loss), with distance from height-derived stride and calories from weight |
 
 **Cross-calculator flow:** every calorie target in the BMR & TDEE results has a **→ send button** that pre-fills the Macro Split calculator (goal, calories, and weight all carry over).
 
@@ -43,7 +44,8 @@ fitness-calculator/
     ├── bmi.js        # BMI (kg + inches)
     ├── bmr.js        # BMR & TDEE (Mifflin-St Jeor)
     ├── macros.js     # Macro split + prefill API for the send flow
-    └── water.js      # Water intake (ml/kg + training + climate)
+    ├── water.js      # Water intake (ml/kg + training + climate)
+    └── steps.js      # Daily steps (age-based target + stride + calories)
 ```
 
 ## Formulas
@@ -52,6 +54,7 @@ fitness-calculator/
 - **BMR (Mifflin-St Jeor)** = 10·kg + 6.25·cm − 5·age + 5 (male) / − 161 (female)
 - **Macros** = protein 1.6–2.2 g/kg by goal, fat 25–27.5% of kcal, carbs the remainder (4/4/9 kcal per g)
 - **Water** = 33 ml/kg + 12 ml per training minute + climate adder (0 / 500 / 750 ml)
+- **Steps** = 10,000/day under 60, 8,000 for 60+ (+2,000 for weight loss); stride = 0.414 × height; kcal = MET 3.5 × kg × hours at 4.8 km/h
 
 ## Disclaimer
 
