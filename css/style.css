@@ -1580,3 +1580,20 @@ html[data-theme="ocean"] {
     transition: none !important;
   }
 }
+
+/* Nav: wrap to two rows on medium widths so no tab label is ever
+   clipped (horizontal scroll with hidden scrollbar stays for phones) */
+@media (max-width: 1200px) {
+  .nav-inner {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    row-gap: 2px;
+    padding-bottom: 2px;
+  }
+}
+@media (max-width: 640px) {
+  .nav-inner {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+}
