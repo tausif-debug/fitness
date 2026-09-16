@@ -133,6 +133,7 @@
 
   function fillForm(p) {
     if (!p) return;
+    $("pf-name").value = p.name || "";
     var sexEl = document.querySelector('input[name="pf-sex"][value="' + p.sex + '"]');
     if (sexEl) sexEl.checked = true;
     $("pf-age").value = p.age;
@@ -155,6 +156,12 @@
     var climate = parseFloat($("pf-climate").value) || 0;
     var gwRaw = $("pf-goal-weight").value.trim();
     var goalWeight = gwRaw === "" ? null : parseFloat(gwRaw);
+    // name: optional, single-spaced, angle brackets stripped (banner uses innerHTML), capped at 40
+    var name = $("pf-name").value
+      .replace(/[<>]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 40);
 
     if (!sexEl || !goalEl) return { error: "Please choose sex and goal." };
     if (isNaN(age) || age < 15 || age > 100) return { error: "Age must be between 15 and 100 years." };
@@ -165,6 +172,7 @@
     }
 
     return {
+      name: name || null,
       sex: sexEl.value,
       age: age,
       weightKg: weight,
@@ -198,7 +206,7 @@
     ];
     el.className = "profile-status is-saved";
     el.innerHTML =
-      "<span>✔ <strong>" + parts.join(" · ") + "</strong></span>" +
+      "<span>✔ <strong>" + (p.name ? p.name + " — " : "") + parts.join(" · ") + "</strong></span>" +
       '<a class="btn-mini" href="#/profile">Edit</a>';
   }
 

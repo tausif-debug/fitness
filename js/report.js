@@ -52,7 +52,7 @@
     var b = [];
     var now = new Date();
 
-    b.push({ style: "title", text: "FitCalc — Personal Fitness Report" });
+    b.push({ style: "title", text: p.name ? "FitCalc — Fitness Report for " + p.name : "FitCalc — Personal Fitness Report" });
     b.push({
       style: "subtitle",
       text: "Generated " + fmtDate(now) + " at " +
@@ -63,6 +63,7 @@
 
     /* ---- Profile ---- */
     b.push({ style: "section", text: "Profile" });
+    if (p.name) b.push({ style: "kv", text: "Name", value: p.name });
     b.push({ style: "kv", text: "Sex", value: p.sex === "male" ? "Male" : "Female" });
     b.push({ style: "kv", text: "Age", value: p.age + " years" });
     b.push({ style: "kv", text: "Weight", value: p.weightKg + " kg" });
