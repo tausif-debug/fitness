@@ -898,6 +898,48 @@ body {
   font-weight: 700;
 }
 
+/* Goal timeline — journey bar */
+.journey {
+  margin: 6px 0 18px;
+}
+
+.journey-track {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+}
+
+.journey-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(200, 255, 46, 0.3), var(--accent));
+  opacity: 0.85;
+}
+
+.journey-dot {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  transform: translate(-50%, -50%);
+}
+
+.journey-ends {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
 /* ============ Footer ============ */
 
 .site-footer {

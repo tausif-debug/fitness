@@ -7,7 +7,7 @@
 (function () {
   "use strict";
 
-  var ROUTES = ["overview", "bmi", "bmr", "macros", "water", "steps"];
+  var ROUTES = ["overview", "bmi", "bmr", "macros", "water", "steps", "timeline"];
   var DEFAULT_ROUTE = "overview";
 
   function currentRoute() {
@@ -38,6 +38,7 @@
       macros: "Macro Split — FitCalc",
       water: "Water Intake — FitCalc",
       steps: "Daily Steps — FitCalc",
+      timeline: "Goal Weight Timeline — FitCalc",
     };
     document.title = titles[route] || titles[DEFAULT_ROUTE];
   }
