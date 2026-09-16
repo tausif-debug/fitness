@@ -1278,3 +1278,17 @@ html[dir="rtl"] .cup-row,
 html[dir="rtl"] .journey-track {
   direction: ltr;
 }
+
+/* ============ Small-screen polish ============ */
+@media (max-width: 480px) {
+  .goal-table { font-size: 0.86rem; }
+  .goal-table th,
+  .goal-table td { padding: 8px 6px; }
+  .nav-tab { padding: 12px 13px; font-size: 0.8rem; }
+  .report-bar { gap: 10px; }
+  .report-btn { width: 100%; }
+  .lang-gate-card { padding: 32px 18px 26px; }
+  .lang-btn { padding: 20px 16px; }
+  .meal-card { padding: 12px 13px; }
+  .food-line { font-size: 0.87rem; }
+}
