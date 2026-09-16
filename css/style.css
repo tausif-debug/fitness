@@ -1381,3 +1381,94 @@ html[data-theme="heritage"] .lang-switch:hover {
   border-color: var(--accent);
   color: var(--accent);
 }
+
+/* ---- Theme: Sunrise — light editorial (cream + coral) ---- */
+html[data-theme="sunrise"] {
+  --bg: #faf6ef;
+  --bg-soft: #f3eee3;
+  --surface: #ffffff;
+  --surface-2: #f1eadf;
+  --border: #e7ddcb;
+  --border-strong: #d3c6ae;
+  --text: #2b2622;
+  --text-dim: #6b6257;
+  --text-faint: #98897a;
+  --accent: #e85d3d;
+  --accent-deep: #c74a2c;
+  --accent-ink: #fff8f2;
+  --accent-glow: rgba(232, 93, 61, 0.22);
+  --on-bg: #2b2622;
+  --on-bg-dim: #6b6257;
+  --on-bg-faint: #98897a;
+  --nav-bg: rgba(250, 246, 239, 0.92);
+  --header-tint: rgba(232, 93, 61, 0.05);
+  --bg-glow-a: rgba(232, 93, 61, 0.07);
+  --bg-glow-b: rgba(240, 180, 80, 0.09);
+  --tint-accent-soft: rgba(232, 93, 61, 0.08);
+  --shadow: 0 10px 30px rgba(96, 72, 40, 0.12);
+}
+html[data-theme="sunrise"] .lang-switch {
+  background: rgba(43, 38, 34, 0.07);
+  border-color: rgba(43, 38, 34, 0.22);
+  color: #2b2622;
+}
+html[data-theme="sunrise"] .lang-switch:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---- Theme: Neon Night — cyber magenta + cyan ---- */
+html[data-theme="neon"] {
+  --bg: #07070d;
+  --bg-soft: #0d0d17;
+  --surface: #12121f;
+  --surface-2: #1a1a2b;
+  --border: #26263c;
+  --border-strong: #3a3a58;
+  --text: #eaf2ff;
+  --text-dim: #9aa8c8;
+  --text-faint: #66719a;
+  --accent: #ff2e88;
+  --accent-deep: #d1146b;
+  --accent-ink: #14040c;
+  --accent-glow: rgba(255, 46, 136, 0.28);
+  --info: #2ee6ff;
+  --on-bg: #eaf2ff;
+  --on-bg-dim: #9aa8c8;
+  --on-bg-faint: #66719a;
+  --nav-bg: rgba(7, 7, 13, 0.9);
+  --header-tint: rgba(255, 46, 136, 0.05);
+  --bg-glow-a: rgba(255, 46, 136, 0.1);
+  --bg-glow-b: rgba(46, 230, 255, 0.07);
+  --tint-accent-soft: rgba(255, 46, 136, 0.1);
+}
+
+/* ---- Theme: Ocean — deep teal + aqua ---- */
+html[data-theme="ocean"] {
+  --bg: #07293c;
+  --bg-soft: #0b3349;
+  --surface: #0e3a52;
+  --surface-2: #14465f;
+  --border: #1d5570;
+  --border-strong: #2b6c8a;
+  --text: #eaf7fb;
+  --text-dim: #a7c9d6;
+  --text-faint: #6f97a8;
+  --accent: #35d0ba;
+  --accent-deep: #1fa894;
+  --accent-ink: #04262a;
+  --accent-glow: rgba(53, 208, 186, 0.25);
+  --on-bg: #eaf7fb;
+  --on-bg-dim: #a7c9d6;
+  --on-bg-faint: #6f97a8;
+  --nav-bg: rgba(6, 38, 58, 0.92);
+  --header-tint: rgba(53, 208, 186, 0.05);
+  --bg-glow-a: rgba(53, 208, 186, 0.09);
+  --bg-glow-b: rgba(76, 195, 255, 0.06);
+  --tint-accent-soft: rgba(53, 208, 186, 0.1);
+}
+
+/* Shared: journey fill follows the accent in every theme */
+.journey-fill {
+  background: linear-gradient(90deg, var(--accent-deep), var(--accent));
+}

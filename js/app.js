@@ -41,13 +41,14 @@
     showRoute(currentRoute());
   }
 
-  /* ---- theme: heritage (emerald+gold, default) / volt classic ---- */
+  /* ---- theme: 5 token themes, cycled by the ◐ pill ---- */
   var THEME_KEY = "fitcalc-theme-v1";
+  var THEMES = ["heritage", "volt", "sunrise", "neon", "ocean"];
 
   function savedTheme() {
     try {
       var v = window.localStorage.getItem(THEME_KEY);
-      return (v === "volt" || v === "heritage") ? v : "heritage";
+      return THEMES.indexOf(v) !== -1 ? v : "heritage";
     } catch (e) { return "heritage"; }
   }
 
@@ -65,7 +66,9 @@
     if (themeBtn) {
       themeBtn.addEventListener("click", function () {
         var cur = document.documentElement.getAttribute("data-theme");
-        applyTheme(cur === "heritage" ? "volt" : "heritage");
+        var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+        applyTheme(next);
+        themeBtn.title = t("switcher.theme") + " · " + next;
       });
     }
 
