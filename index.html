@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FitCalc — Gym Fitness Calculators</title>
   <meta name="description" content="Enter your stats once — BMI, BMR & TDEE, macros, water intake, daily steps and goal timeline all calculate automatically." />
-  <link rel="stylesheet" href="css/style.css?v=9" />
+  <link rel="stylesheet" href="css/style.css?v=10" />
 </head>
 <body>
 
@@ -35,6 +35,7 @@
       <a href="#/water"    class="nav-tab" data-route="water">Water</a>
       <a href="#/steps"    class="nav-tab" data-route="steps">Steps</a>
       <a href="#/timeline" class="nav-tab" data-route="timeline">Timeline</a>
+      <a href="#/diet"     class="nav-tab" data-route="diet">Diet Plan</a>
     </div>
   </nav>
 
@@ -61,7 +62,7 @@
           </svg>
           Download PDF report
         </button>
-        <span class="report-note" id="report-msg">All six calculators in one PDF — generated from your profile.</span>
+        <span class="report-note" id="report-msg">Profile, all six calculators and your 7-day diet plan — one PDF.</span>
       </div>
 
       <div class="calc-grid">
@@ -94,6 +95,11 @@
           <div class="calc-card-status is-live">Live</div>
           <h2>Goal Timeline</h2>
           <p>When you'll hit your target weight on your goal's calorie plan — with milestone dates.</p>
+        </a>
+        <a class="calc-card is-live" href="#/diet">
+          <div class="calc-card-status is-live">Live</div>
+          <h2>7-Day Diet Plan</h2>
+          <p>A full week of Pakistani home-style meals — portioned to your calorie and protein targets.</p>
         </a>
       </div>
     </section>
@@ -532,6 +538,33 @@
       </div>
     </section>
 
+    <section class="route" id="route-diet" data-route="diet" hidden>
+      <h1 class="page-title">7-Day Diet Plan 🍛</h1>
+      <p class="page-subtitle">Pakistani home-style meals — automatically portioned to your goal's calorie and protein targets. Edit your profile and the whole week re-scales.</p>
+
+      <div class="calc-layout">
+        <div class="panel">
+          <h3 class="results-heading">From your profile</h3>
+          <div id="diet-summary" class="summary-list"></div>
+          <a class="btn-secondary" href="#/profile">Edit profile</a>
+        </div>
+
+        <div class="panel">
+          <div class="result-empty" id="diet-empty">
+            <p>Set up your <a href="#/profile">profile</a> once — your 7-day Pakistani meal plan appears here automatically.</p>
+          </div>
+
+          <div id="diet-output" hidden>
+            <div class="day-chips" id="diet-days"></div>
+            <div id="diet-day"></div>
+            <div class="diet-week panel-inset" id="diet-week"></div>
+
+            <p class="disclaimer">Estimates assume home-style Pakistani cooking with moderate oil/ghee — restaurant and street-food portions can be 1.5–2× larger. Swap freely within a category (daal ↔ daal, sabzi ↔ sabzi, roti ↔ rice at 1 roti ≈ 75 g rice). Not medical advice — consult a dietitian for clinical conditions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- ============ FOOTER ============ -->
@@ -542,15 +575,16 @@
     </div>
   </footer>
 
-  <script src="js/app.js?v=9"></script>
-  <script src="js/profile.js?v=9"></script>
-  <script src="js/bmi.js?v=9"></script>
-  <script src="js/bmr.js?v=9"></script>
-  <script src="js/macros.js?v=9"></script>
-  <script src="js/water.js?v=9"></script>
-  <script src="js/steps.js?v=9"></script>
-  <script src="js/timeline.js?v=9"></script>
-  <script src="js/pdf.js?v=9"></script>
-  <script src="js/report.js?v=9"></script>
+  <script src="js/app.js?v=10"></script>
+  <script src="js/profile.js?v=10"></script>
+  <script src="js/bmi.js?v=10"></script>
+  <script src="js/bmr.js?v=10"></script>
+  <script src="js/macros.js?v=10"></script>
+  <script src="js/water.js?v=10"></script>
+  <script src="js/steps.js?v=10"></script>
+  <script src="js/timeline.js?v=10"></script>
+  <script src="js/diet.js?v=10"></script>
+  <script src="js/pdf.js?v=10"></script>
+  <script src="js/report.js?v=10"></script>
 </body>
 </html>

@@ -175,6 +175,22 @@
       }
     }
 
+    /* ---- 7-Day Diet Plan ---- */
+    b.push({ style: "section", text: "7-Day Diet Plan (Pakistani)" });
+    var plan = FitCalc.diet.buildWeek(p);
+    plan.days.forEach(function (d) {
+      b.push({ style: "kv", text: d.label, value: fmt0(d.totals.k) + " kcal · P " + fmt0(d.totals.p) + " g · C " + fmt0(d.totals.c) + " g · F " + fmt0(d.totals.f) + " g" });
+      d.meals.forEach(function (m) {
+        var items = m.items.map(function (it) {
+          var fd = FitCalc.diet.FOODS[it.key];
+          var q = fd.g ? " " + Math.round(it.qty * fd.g) + " g"
+            : it.qty !== 1 ? " x" + (Math.round(it.qty * 10) / 10) : "";
+          return it.name + q;
+        }).join(", ");
+        b.push({ style: "small", text: "    " + m.short + ": " + items });
+      });
+    });
+
     /* ---- Footer ---- */
     b.push({ rule: true });
     b.push({ style: "small", text: "FitCalc is an educational tool, not medical advice. Estimates assume 1 kg of body tissue ≈ 7,700 kcal;" });
@@ -191,7 +207,7 @@
     el.textContent = msg;
     el.style.color = ok ? "var(--ok)" : "var(--warn)";
     setTimeout(function () {
-      el.textContent = "All six calculators in one PDF — generated from your profile.";
+      el.textContent = "Profile, all six calculators and your 7-day diet plan — one PDF.";
       el.style.color = "";
     }, 4000);
   }

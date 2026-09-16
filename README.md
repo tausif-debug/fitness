@@ -16,10 +16,11 @@ All calculations use fixed units: **weight in kg, height in inches**.
 | **Water Intake** | Daily hydration target in litres from weight (33 ml/kg) + training minutes (+12 ml/min) + climate adder, with glass/bottle equivalents |
 | **Daily Steps** | Research-based daily step target by age and goal (health / weight loss), with distance from height-derived stride and calories from weight |
 | **Goal Weight Timeline** | Weeks and target date to reach a goal weight from maintenance vs planned intake — weekly rate, milestone dates, direction checks and safe-pace warnings |
+| **7-Day Diet Plan** | A full week of Pakistani home-style meals (nashta / lunch / dinner / snacks) portioned to the goal's calorie and protein targets — day chips, per-meal calories, day-total match bar and weekly averages |
 
 **One profile, six calculators:** the user enters their stats once (optional name, sex, age, weight, height, activity level, goal, target weight, climate) in the **Profile** tab — saved to localStorage — and every calculator renders from that shared state automatically. Changing the profile live-updates all results. Derived links: activity level → training minutes for Water; goal + TDEE → macro calories and Timeline intake; goal → Steps mode.
 
-**PDF report:** once the profile is saved, the Overview shows a **Download PDF report** button that generates a complete report — profile, BMI, BMR & TDEE with all five calorie targets, macros at your goal calories, water, steps, and the goal-weight timeline — as a single A4 PDF, entirely client-side. If a name is set in the profile, the report is personalised ("Fitness Report for …"). The PDF engine (`js/pdf.js`) is hand-rolled: block layout, auto-pagination, xref assembly, Blob download. No libraries, no server, no build step.
+**PDF report:** once the profile is saved, the Overview shows a **Download PDF report** button that generates a complete report — profile, BMI, BMR & TDEE with all five calorie targets, macros at your goal calories, water, steps, the goal-weight timeline, and the full 7-day diet plan — as a single A4 PDF, entirely client-side. If a name is set in the profile, the report is personalised ("Fitness Report for …"). The PDF engine (`js/pdf.js`) is hand-rolled: block layout, auto-pagination, xref assembly, Blob download. No libraries, no server, no build step.
 
 ## Run locally
 
@@ -53,6 +54,7 @@ fitness-calculator/
     ├── water.js      # Water intake (ml/kg + training + climate)
     ├── steps.js      # Daily steps (age-based target + stride + calories)
     ├── timeline.js   # Goal weight timeline (rate, dates, milestones)
+    ├── diet.js       # 7-day Pakistani diet plan (food DB, rotation, tuner)
     ├── pdf.js        # minimal PDF engine: layout, pagination, xref, Blob download
     └── report.js     # collects all calculator results into PDF report blocks
 ```
@@ -65,6 +67,7 @@ fitness-calculator/
 - **Water** = 33 ml/kg + 12 ml per training minute + climate adder (0 / 500 / 750 ml)
 - **Steps** = 10,000/day under 60, 8,000 for 60+ (+2,000 for weight loss); stride = 0.414 × height; kcal = MET 3.5 × kg × hours at 4.8 km/h
 - **Timeline** = |goal − current| ÷ (|intake − maintenance| × 7 ÷ 7,700) weeks; safe pace ≤ 1% BW/wk (cut) or ≤ 0.5% (bulk)
+- **Diet plan** = deterministic 7-day rotation of Pakistani meal templates; staples (roti/rice/paratha) scale ×0.75 (cut) / ×1 (maintain) / ×1.35 (bulk); snacks and boosters close the gap to the calorie target (stop at 96%) and protein target (stop at 80%); food macros are standard home-cooking estimates
 
 ## Disclaimer
 
