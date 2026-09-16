@@ -1,8 +1,6 @@
 /* ============================================================
-   FitCalc — Water Intake (renders from the shared profile)
+   FitCalc — Water Intake (renders from the shared profile, translated)
    Base 33 ml/kg + 12 ml per training minute + climate adder.
-   Training minutes are derived from the profile activity level:
-     sedentary 0 · light 30 · moderate 45 · very active 60 · athlete 90
    ============================================================ */
 
 (function () {
@@ -16,6 +14,10 @@
 
   function $(id) {
     return document.getElementById(id);
+  }
+
+  function t(key, params) {
+    return FitCalc.i18n.t(key, params);
   }
 
   function fmtMl(ml) {
@@ -41,9 +43,9 @@
       row.appendChild(cup);
     }
 
-    var caption = "≈ " + (totalMl / GLASS_ML).toFixed(1) + " glasses of 250 ml";
+    var caption = t("water.caption", { x: (totalMl / GLASS_ML).toFixed(1) });
     if (cupsNeeded > MAX_CUPS_SHOWN) {
-      caption += " — showing first " + MAX_CUPS_SHOWN;
+      caption += t("water.captionMore", { n: MAX_CUPS_SHOWN });
     }
     $("water-cup-caption").textContent = caption;
   }
@@ -64,9 +66,9 @@
     var totalMl = baseMl + workoutMl + climateMl;
 
     FitCalc.ui.summary("water-summary", [
-      ["Weight", p.weightKg + " kg"],
-      ["Training", workoutMin + " min/day (" + (FitCalc.labels.activity[String(p.activity)] || "—") + ")"],
-      ["Climate", FitCalc.labels.climate[String(climateMl)] || "Temperate"],
+      [t("row.weight"), p.weightKg + " kg"],
+      [t("row.training"), t("val.minPerDay", { m: workoutMin, a: t("activityShort." + p.activity) })],
+      [t("row.climate"), t("climateShort." + climateMl)],
     ]);
 
     $("water-empty").hidden = true;
@@ -75,8 +77,8 @@
     $("water-litres").textContent = (totalMl / 1000).toFixed(1);
     $("water-base").textContent = fmtMl(baseMl);
     $("water-workout-add").textContent =
-      workoutMin > 0 ? "+" + fmtMl(workoutMl) + " (" + workoutMin + " min)" : "rest day";
-    $("water-climate-add").textContent = climateMl > 0 ? "+" + fmtMl(climateMl) : "none";
+      workoutMin > 0 ? t("water.trainVal", { ml: fmtMl(workoutMl).replace(" ml", ""), m: workoutMin }) : t("water.restDay");
+    $("water-climate-add").textContent = climateMl > 0 ? "+" + fmtMl(climateMl) : t("water.none");
     $("water-bottles").textContent = "≈ " + (totalMl / BOTTLE_ML).toFixed(1);
 
     renderCups(totalMl);
@@ -84,6 +86,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     FitCalc.profile.onChange(render);
+    FitCalc.i18n.onChange(render);
     render();
   });
 })();

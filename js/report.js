@@ -207,7 +207,7 @@
     el.textContent = msg;
     el.style.color = ok ? "var(--ok)" : "var(--warn)";
     setTimeout(function () {
-      el.textContent = "Profile, all six calculators and your 7-day diet plan — one PDF.";
+      el.textContent = FitCalc.i18n ? FitCalc.i18n.t("report.note") : "";
       el.style.color = "";
     }, 4000);
   }
@@ -215,15 +215,15 @@
   function onDownload() {
     var blocks = collectBlocks();
     if (!blocks) {
-      flashNote("Save your profile first.", false);
+      flashNote(FitCalc.i18n.t("report.savedFirst"), false);
       return;
     }
     var fname = "fitcalc-report-" + new Date().toISOString().slice(0, 10) + ".pdf";
     try {
       window.FitCalcPdf.generate(blocks, fname);
-      flashNote("✔ Downloaded " + fname, true);
+      flashNote(FitCalc.i18n.t("report.done", { f: fname }), true);
     } catch (e) {
-      flashNote("Download failed here — open the app in a regular browser tab and retry.", false);
+      flashNote(FitCalc.i18n.t("report.fail"), false);
     }
   }
 

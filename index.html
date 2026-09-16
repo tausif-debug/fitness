@@ -4,10 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FitCalc — Gym Fitness Calculators</title>
-  <meta name="description" content="Enter your stats once — BMI, BMR & TDEE, macros, water intake, daily steps and goal timeline all calculate automatically." />
-  <link rel="stylesheet" href="css/style.css?v=10" />
+  <meta name="description" content="Enter your stats once — BMI, BMR & TDEE, macros, water intake, daily steps, goal timeline and a 7-day Pakistani diet plan, in English or Urdu." />
+  <link rel="stylesheet" href="css/style.css?v=11" />
 </head>
 <body>
+
+  <!-- ============ LANGUAGE GATE ============ -->
+  <div class="lang-gate" id="lang-gate" hidden>
+    <div class="lang-gate-card">
+      <div class="lang-gate-brand">FIT<em>CALC</em></div>
+      <p class="lang-gate-title">Choose your language <span dir="rtl">· اپنی زبان منتخب کریں</span></p>
+      <div class="lang-gate-buttons">
+        <button type="button" class="lang-btn" id="lang-en">
+          <span class="lang-btn-name">English</span>
+          <span class="lang-btn-sub">Continue in English</span>
+        </button>
+        <button type="button" class="lang-btn" id="lang-ur">
+          <span class="lang-btn-name" dir="rtl">اردو</span>
+          <span class="lang-btn-sub" dir="rtl">اردو میں جاری رکھیں</span>
+        </button>
+      </div>
+      <p class="lang-gate-note">One profile · six calculators · 7-day diet plan · PDF report</p>
+    </div>
+  </div>
 
   <!-- ============ HEADER ============ -->
   <header class="site-header">
@@ -20,22 +39,23 @@
         </span>
         <span class="brand-text">FIT<em>CALC</em></span>
       </a>
-      <p class="brand-tagline">Train smarter. Numbers first.</p>
+      <p class="brand-tagline" data-i18n="header.tagline">Train smarter. Numbers first.</p>
+      <button type="button" class="lang-switch" id="lang-switch" title="Switch language">اردو</button>
     </div>
   </header>
 
   <!-- ============ NAV ============ -->
   <nav class="site-nav" aria-label="Calculators">
     <div class="container nav-inner" id="nav-tabs">
-      <a href="#/overview" class="nav-tab" data-route="overview">Overview</a>
-      <a href="#/profile"  class="nav-tab" data-route="profile">Profile</a>
-      <a href="#/bmi"      class="nav-tab" data-route="bmi">BMI</a>
-      <a href="#/bmr"      class="nav-tab" data-route="bmr">BMR &amp; TDEE</a>
-      <a href="#/macros"   class="nav-tab" data-route="macros">Macros</a>
-      <a href="#/water"    class="nav-tab" data-route="water">Water</a>
-      <a href="#/steps"    class="nav-tab" data-route="steps">Steps</a>
-      <a href="#/timeline" class="nav-tab" data-route="timeline">Timeline</a>
-      <a href="#/diet"     class="nav-tab" data-route="diet">Diet Plan</a>
+      <a href="#/overview" class="nav-tab" data-route="overview" data-i18n="nav.overview">Overview</a>
+      <a href="#/profile"  class="nav-tab" data-route="profile" data-i18n="nav.profile">Profile</a>
+      <a href="#/bmi"      class="nav-tab" data-route="bmi" data-i18n="nav.bmi">BMI</a>
+      <a href="#/bmr"      class="nav-tab" data-route="bmr" data-i18n="nav.bmr">BMR &amp; TDEE</a>
+      <a href="#/macros"   class="nav-tab" data-route="macros" data-i18n="nav.macros">Macros</a>
+      <a href="#/water"    class="nav-tab" data-route="water" data-i18n="nav.water">Water</a>
+      <a href="#/steps"    class="nav-tab" data-route="steps" data-i18n="nav.steps">Steps</a>
+      <a href="#/timeline" class="nav-tab" data-route="timeline" data-i18n="nav.timeline">Timeline</a>
+      <a href="#/diet"     class="nav-tab" data-route="diet" data-i18n="nav.diet">Diet Plan</a>
     </div>
   </nav>
 
@@ -44,14 +64,14 @@
 
     <!-- Overview -->
     <section class="route" id="route-overview" data-route="overview">
-      <h1 class="page-title">Your Gym Toolkit</h1>
+      <h1 class="page-title" data-i18n="overview.title">Your Gym Toolkit</h1>
       <div class="dev-credit">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
           <path d="M13 2 4.5 13.5H11L9.5 22 19 9.5h-6.5L13 2z"/>
         </svg>
-        <span>Developed by <strong>Tausif Rasool</strong></span>
+        <span data-i18n="overview.credit">Developed by <strong>Tausif Rasool</strong></span>
       </div>
-      <p class="page-subtitle">One profile, six calculators. Enter your stats <strong>once</strong> — everything below fills in automatically.</p>
+      <p class="page-subtitle" data-i18n="overview.subtitle">One profile, six calculators. Enter your stats <strong>once</strong> — everything below fills in automatically.</p>
 
       <div class="profile-status is-empty" id="profile-status"></div>
 
@@ -60,138 +80,138 @@
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 3v12M6 11l6 6 6-6M4 21h16"/>
           </svg>
-          Download PDF report
+          <span data-i18n="report.download">Download PDF report</span>
         </button>
-        <span class="report-note" id="report-msg">Profile, all six calculators and your 7-day diet plan — one PDF.</span>
+        <span class="report-note" id="report-msg" data-i18n="report.note">Profile, all six calculators and your 7-day diet plan — one PDF.</span>
       </div>
 
       <div class="calc-grid">
         <a class="calc-card is-live" href="#/bmi">
-          <div class="calc-card-status is-live">Live</div>
-          <h2>BMI</h2>
-          <p>Body Mass Index from your weight (kg) and height (inches) — with category gauge and healthy weight range.</p>
+          <div class="calc-card-status is-live" data-i18n="card.live">Live</div>
+          <h2 data-i18n="card.bmi.t">BMI</h2>
+          <p data-i18n="card.bmi.d">Body Mass Index from your weight (kg) and height (inches) — with category gauge and healthy weight range.</p>
         </a>
         <a class="calc-card is-live" href="#/bmr">
-          <div class="calc-card-status is-live">Live</div>
-          <h2>BMR &amp; TDEE</h2>
-          <p>Mifflin-St Jeor BMR and maintenance calories, with all cut/bulk targets and your plan highlighted.</p>
+          <div class="calc-card-status is-live" data-i18n="card.live">Live</div>
+          <h2 data-i18n="card.bmr.t">BMR &amp; TDEE</h2>
+          <p data-i18n="card.bmr.d">Mifflin-St Jeor BMR and maintenance calories, with all cut/bulk targets and your plan highlighted.</p>
         </a>
         <a class="calc-card is-live" href="#/macros">
-          <div class="calc-card-status is-live">Live</div>
-          <h2>Macro Split</h2>
-          <p>Protein / carbs / fat grams for your goal's calorie target — computed straight from your TDEE.</p>
+          <div class="calc-card-status is-live" data-i18n="card.live">Live</div>
+          <h2 data-i18n="card.macros.t">Macro Split</h2>
+          <p data-i18n="card.macros.d">Protein / carbs / fat grams for your goal's calorie target — computed straight from your TDEE.</p>
         </a>
         <a class="calc-card is-live" href="#/water">
-          <div class="calc-card-status is-live">Live</div>
-          <h2>Water Intake</h2>
-          <p>Daily hydration target in litres from your weight, training volume and climate.</p>
+          <div class="calc-card-status is-live" data-i18n="card.live">Live</div>
+          <h2 data-i18n="card.water.t">Water Intake</h2>
+          <p data-i18n="card.water.d">Daily hydration target in litres from your weight, training volume and climate.</p>
         </a>
         <a class="calc-card is-live" href="#/steps">
-          <div class="calc-card-status is-live">Live</div>
-          <h2>Daily Steps</h2>
-          <p>Research-based step target for your age and goal — with distance and calories burned.</p>
+          <div class="calc-card-status is-live" data-i18n="card.live">Live</div>
+          <h2 data-i18n="card.steps.t">Daily Steps</h2>
+          <p data-i18n="card.steps.d">Research-based step target for your age and goal — with distance and calories burned.</p>
         </a>
         <a class="calc-card is-live" href="#/timeline">
-          <div class="calc-card-status is-live">Live</div>
-          <h2>Goal Timeline</h2>
-          <p>When you'll hit your target weight on your goal's calorie plan — with milestone dates.</p>
+          <div class="calc-card-status is-live" data-i18n="card.live">Live</div>
+          <h2 data-i18n="card.timeline.t">Goal Timeline</h2>
+          <p data-i18n="card.timeline.d">When you'll hit your target weight on your goal's calorie plan — with milestone dates.</p>
         </a>
         <a class="calc-card is-live" href="#/diet">
-          <div class="calc-card-status is-live">Live</div>
-          <h2>7-Day Diet Plan</h2>
-          <p>A full week of Pakistani home-style meals — portioned to your calorie and protein targets.</p>
+          <div class="calc-card-status is-live" data-i18n="card.live">Live</div>
+          <h2 data-i18n="card.diet.t">7-Day Diet Plan</h2>
+          <p data-i18n="card.diet.d">A full week of Pakistani home-style meals — portioned to your calorie and protein targets.</p>
         </a>
       </div>
     </section>
 
     <!-- Profile -->
     <section class="route" id="route-profile" data-route="profile" hidden>
-      <h1 class="page-title">My Profile</h1>
-      <p class="page-subtitle">Enter your stats <strong>once</strong> — every calculator reads from here. Saved in your browser only (localStorage); nothing is sent anywhere.</p>
+      <h1 class="page-title" data-i18n="profile.title">My Profile</h1>
+      <p class="page-subtitle" data-i18n="profile.subtitle">Enter your stats <strong>once</strong> — every calculator reads from here. Saved in your browser only (localStorage); nothing is sent anywhere.</p>
 
       <div class="panel profile-panel">
         <form id="pf-form" novalidate>
           <div class="field">
-            <label for="pf-name">Name <span class="opt">optional — personalises your PDF report</span></label>
-            <input type="text" id="pf-name" maxlength="40" placeholder="e.g. Tausif" autocomplete="name" />
+            <label for="pf-name"><span data-i18n="form.name">Name</span> <span class="opt" data-i18n="form.nameOpt">optional — personalises your PDF report</span></label>
+            <input type="text" id="pf-name" maxlength="40" data-i18n-ph="form.namePh" placeholder="e.g. Tausif" autocomplete="name" />
           </div>
 
           <div class="field">
-            <label>Sex</label>
+            <label data-i18n="form.sex">Sex</label>
             <div class="seg-choice">
               <label class="seg-option">
                 <input type="radio" name="pf-sex" value="male" checked />
-                <span>Male</span>
+                <span data-i18n="form.male">Male</span>
               </label>
               <label class="seg-option">
                 <input type="radio" name="pf-sex" value="female" />
-                <span>Female</span>
+                <span data-i18n="form.female">Female</span>
               </label>
             </div>
           </div>
 
           <div class="field-row">
             <div class="field">
-              <label for="pf-age">Age (years)</label>
-              <input type="number" id="pf-age" min="15" max="100" step="1" placeholder="e.g. 28" inputmode="numeric" />
+              <label for="pf-age" data-i18n="form.age">Age (years)</label>
+              <input type="number" id="pf-age" min="15" max="100" step="1" data-i18n-ph="form.agePh" placeholder="e.g. 28" inputmode="numeric" />
             </div>
             <div class="field">
-              <label for="pf-weight">Weight (kg)</label>
-              <input type="number" id="pf-weight" min="20" max="400" step="0.1" placeholder="e.g. 78.5" inputmode="decimal" />
+              <label for="pf-weight" data-i18n="form.weight">Weight (kg)</label>
+              <input type="number" id="pf-weight" min="20" max="400" step="0.1" data-i18n-ph="form.weightPh" placeholder="e.g. 78.5" inputmode="decimal" />
             </div>
           </div>
 
           <div class="field-row">
             <div class="field">
-              <label for="pf-height">Height (inches)</label>
-              <input type="number" id="pf-height" min="36" max="96" step="0.1" placeholder="e.g. 69 — that's 5'9&quot;" inputmode="decimal" />
+              <label for="pf-height" data-i18n="form.height">Height (inches)</label>
+              <input type="number" id="pf-height" min="36" max="96" step="0.1" data-i18n-ph="form.heightPh" placeholder="e.g. 69 — that's 5'9&quot;" inputmode="decimal" />
             </div>
             <div class="field">
-              <label for="pf-goal-weight">Target weight (kg) <span class="opt">for Timeline</span></label>
-              <input type="number" id="pf-goal-weight" min="20" max="400" step="0.1" placeholder="e.g. 72" inputmode="decimal" />
+              <label for="pf-goal-weight"><span data-i18n="form.goalWeight">Target weight (kg)</span> <span class="opt" data-i18n="form.goalWeightOpt">for Timeline</span></label>
+              <input type="number" id="pf-goal-weight" min="20" max="400" step="0.1" data-i18n-ph="form.goalWeightPh" placeholder="e.g. 72" inputmode="decimal" />
             </div>
           </div>
 
           <div class="field">
-            <label for="pf-activity">Activity level</label>
+            <label for="pf-activity" data-i18n="form.activity">Activity level</label>
             <select id="pf-activity">
-              <option value="1.2">Sedentary — desk job, little or no exercise</option>
-              <option value="1.375">Light — training 1–3 days/week</option>
-              <option value="1.55" selected>Moderate — training 3–5 days/week</option>
-              <option value="1.725">Very active — training 6–7 days/week</option>
-              <option value="1.9">Athlete — twice-daily training or physical job</option>
+              <option value="1.2" data-i18n="activityOpt.1.2">Sedentary — desk job, little or no exercise</option>
+              <option value="1.375" data-i18n="activityOpt.1.375">Light — training 1–3 days/week</option>
+              <option value="1.55" selected data-i18n="activityOpt.1.55">Moderate — training 3–5 days/week</option>
+              <option value="1.725" data-i18n="activityOpt.1.725">Very active — training 6–7 days/week</option>
+              <option value="1.9" data-i18n="activityOpt.1.9">Athlete — twice-daily training or physical job</option>
             </select>
           </div>
 
           <div class="field">
-            <label>Goal</label>
+            <label data-i18n="form.goal">Goal</label>
             <div class="seg-choice">
               <label class="seg-option">
                 <input type="radio" name="pf-goal" value="cut" />
-                <span>Cut</span>
+                <span data-i18n="goal.cut">Cut</span>
               </label>
               <label class="seg-option">
                 <input type="radio" name="pf-goal" value="maintain" checked />
-                <span>Maintain</span>
+                <span data-i18n="goal.maintain">Maintain</span>
               </label>
               <label class="seg-option">
                 <input type="radio" name="pf-goal" value="bulk" />
-                <span>Lean bulk</span>
+                <span data-i18n="goal.bulk">Lean bulk</span>
               </label>
             </div>
           </div>
 
           <div class="field">
-            <label for="pf-climate">Climate <span class="opt">for Water intake</span></label>
+            <label for="pf-climate"><span data-i18n="form.climate">Climate</span> <span class="opt" data-i18n="form.climateOpt">for Water intake</span></label>
             <select id="pf-climate">
-              <option value="0" selected>Temperate</option>
-              <option value="500">Hot / humid — adds 500 ml</option>
-              <option value="750">Hot &amp; dry or high altitude — adds 750 ml</option>
+              <option value="0" selected data-i18n="climateOpt.0">Temperate</option>
+              <option value="500" data-i18n="climateOpt.500">Hot / humid — adds 500 ml</option>
+              <option value="750" data-i18n="climateOpt.750">Hot &amp; dry or high altitude — adds 750 ml</option>
             </select>
           </div>
 
-          <p class="hint">Your activity level also sets training minutes/day for the Water calculator (Sedentary 0 · Light 30 · Moderate 45 · Very active 60 · Athlete 90). Goal targets: Cut = TDEE − 500 kcal, Lean bulk = TDEE + 250 kcal.</p>
-          <button type="submit" class="btn-primary">Save profile</button>
+          <p class="hint" data-i18n="profile.hint">Your activity level also sets training minutes/day for the Water calculator (Sedentary 0 · Light 30 · Moderate 45 · Very active 60 · Athlete 90). Goal targets: Cut = TDEE − 500 kcal, Lean bulk = TDEE + 250 kcal.</p>
+          <button type="submit" class="btn-primary" data-i18n="profile.save">Save profile</button>
           <div class="error-msg" id="pf-error" hidden></div>
           <div class="ok-msg" id="pf-note" hidden></div>
         </form>
@@ -200,25 +220,25 @@
 
     <!-- BMI -->
     <section class="route" id="route-bmi" data-route="bmi" hidden>
-      <h1 class="page-title">BMI Calculator</h1>
-      <p class="page-subtitle">Body Mass Index — from your profile's weight (kg) and height (inches).</p>
+      <h1 class="page-title" data-i18n="bmi.title">BMI Calculator</h1>
+      <p class="page-subtitle" data-i18n="bmi.subtitle">Body Mass Index — from your profile's weight (kg) and height (inches).</p>
 
       <div class="calc-layout">
         <div class="panel">
-          <h3 class="results-heading">From your profile</h3>
+          <h3 class="results-heading" data-i18n="common.fromProfile">From your profile</h3>
           <div id="bmi-summary" class="summary-list"></div>
-          <a class="btn-secondary" href="#/profile">Edit profile</a>
+          <a class="btn-secondary" href="#/profile" data-i18n="common.editProfile">Edit profile</a>
         </div>
 
         <div class="panel">
           <div class="result-empty" id="bmi-empty">
-            <p>Set up your <a href="#/profile">profile</a> once — your BMI appears here automatically.</p>
+            <p data-i18n="bmi.empty">Set up your <a href="#/profile">profile</a> once — your BMI appears here automatically.</p>
           </div>
 
           <div id="bmi-output" hidden>
             <div class="result-hero">
               <div class="value" id="bmi-value">—</div>
-              <div class="label">BMI (kg/m²) · <span id="bmi-category">—</span></div>
+              <div class="label"><span data-i18n="bmi.heroLabel">BMI (kg/m²) ·</span> <span id="bmi-category">—</span></div>
             </div>
 
             <div class="bmi-gauge" aria-hidden="true">
@@ -233,15 +253,15 @@
             </div>
 
             <div class="result-row">
-              <span class="k">Healthy weight for your height</span>
+              <span class="k" data-i18n="bmi.healthy">Healthy weight for your height</span>
               <span class="v" id="bmi-healthy-range">—</span>
             </div>
             <div class="result-row">
-              <span class="k">Distance to healthy range</span>
+              <span class="k" data-i18n="bmi.distance">Distance to healthy range</span>
               <span class="v" id="bmi-distance">—</span>
             </div>
 
-            <p class="disclaimer">BMI is a population screening tool — it doesn't distinguish muscle from fat, so very muscular lifters often score "overweight".</p>
+            <p class="disclaimer" data-i18n="bmi.disclaimer">BMI is a population screening tool — it doesn't distinguish muscle from fat, so very muscular lifters often score "overweight".</p>
           </div>
         </div>
       </div>
@@ -249,47 +269,47 @@
 
     <!-- BMR & TDEE -->
     <section class="route" id="route-bmr" data-route="bmr" hidden>
-      <h1 class="page-title">BMR &amp; TDEE</h1>
-      <p class="page-subtitle">Mifflin-St Jeor — from your profile. Your goal's target row is highlighted.</p>
+      <h1 class="page-title" data-i18n="bmr.title">BMR &amp; TDEE</h1>
+      <p class="page-subtitle" data-i18n="bmr.subtitle">Mifflin-St Jeor — from your profile. Your goal's target row is highlighted.</p>
 
       <div class="calc-layout">
         <div class="panel">
-          <h3 class="results-heading">From your profile</h3>
+          <h3 class="results-heading" data-i18n="common.fromProfile">From your profile</h3>
           <div id="bmr-summary" class="summary-list"></div>
-          <a class="btn-secondary" href="#/profile">Edit profile</a>
+          <a class="btn-secondary" href="#/profile" data-i18n="common.editProfile">Edit profile</a>
         </div>
 
         <div class="panel">
           <div class="result-empty" id="bmr-empty">
-            <p>Set up your <a href="#/profile">profile</a> once — your BMR, TDEE and calorie targets appear here automatically.</p>
+            <p data-i18n="bmr.empty">Set up your <a href="#/profile">profile</a> once — your BMR, TDEE and calorie targets appear here automatically.</p>
           </div>
 
           <div id="bmr-output" hidden>
             <div class="result-hero">
-              <div class="value"><span id="bmr-tdee">—</span><span class="unit">kcal/day</span></div>
-              <div class="label">Maintenance calories (TDEE)</div>
+              <div class="value"><span id="bmr-tdee">—</span><span class="unit" data-i18n="bmr.heroUnit">kcal/day</span></div>
+              <div class="label" data-i18n="bmr.heroLabel">Maintenance calories (TDEE)</div>
             </div>
 
             <div class="result-row">
-              <span class="k">BMR — burn at complete rest</span>
+              <span class="k" data-i18n="bmr.bmrRow">BMR — burn at complete rest</span>
               <span class="v"><span id="bmr-bmr">—</span> kcal</span>
             </div>
             <div class="result-row">
-              <span class="k">Activity burn (TDEE − BMR)</span>
+              <span class="k" data-i18n="bmr.activityRow">Activity burn (TDEE − BMR)</span>
               <span class="v"><span id="bmr-activity-burn">—</span> kcal</span>
             </div>
 
-            <h3 class="results-heading">Targets by goal</h3>
+            <h3 class="results-heading" data-i18n="bmr.targets">Targets by goal</h3>
             <table class="goal-table">
               <thead>
-                <tr><th>Goal</th><th class="num">Calories</th><th class="num rate-col">Est. change</th></tr>
+                <tr><th data-i18n="th.goal">Goal</th><th class="num" data-i18n="th.calories">Calories</th><th class="num rate-col" data-i18n="th.change">Est. change</th></tr>
               </thead>
               <tbody id="bmr-goals"></tbody>
             </table>
 
             <div class="warn-note" id="bmr-warn" hidden></div>
 
-            <p class="disclaimer">Estimates assume 1 kg of body tissue ≈ 7,700 kcal. Real-world results vary ±10% — track your weight for 2 weeks and adjust.</p>
+            <p class="disclaimer" data-i18n="bmr.disclaimer">Estimates assume 1 kg of body tissue ≈ 7,700 kcal. Real-world results vary ±10% — track your weight for 2 weeks and adjust.</p>
           </div>
         </div>
       </div>
@@ -297,35 +317,35 @@
 
     <!-- Macros -->
     <section class="route" id="route-macros" data-route="macros" hidden>
-      <h1 class="page-title">Macro Split</h1>
-      <p class="page-subtitle">Protein / carbs / fat for your goal's calorie target — computed from your profile automatically.</p>
+      <h1 class="page-title" data-i18n="macros.title">Macro Split</h1>
+      <p class="page-subtitle" data-i18n="macros.subtitle">Protein / carbs / fat for your goal's calorie target — computed from your profile automatically.</p>
 
       <div class="calc-layout">
         <div class="panel">
-          <h3 class="results-heading">From your profile</h3>
+          <h3 class="results-heading" data-i18n="common.fromProfile">From your profile</h3>
           <div id="macros-summary" class="summary-list"></div>
-          <a class="btn-secondary" href="#/profile">Edit profile</a>
+          <a class="btn-secondary" href="#/profile" data-i18n="common.editProfile">Edit profile</a>
         </div>
 
         <div class="panel">
           <div class="result-empty" id="macro-empty">
-            <p>Set up your <a href="#/profile">profile</a> once — your macros appear here automatically.</p>
+            <p data-i18n="macros.empty">Set up your <a href="#/profile">profile</a> once — your macros appear here automatically.</p>
           </div>
 
           <div id="macro-output" hidden>
             <div class="macro-cards">
               <div class="macro-card m-protein">
-                <div class="m-name">Protein</div>
+                <div class="m-name" data-i18n="macro.protein">Protein</div>
                 <div class="grams"><span id="macro-protein-g">—</span><span class="g">g</span></div>
                 <div class="m-kcal"><span id="macro-protein-kcal">—</span> kcal · <span id="macro-protein-pct">—</span>%</div>
               </div>
               <div class="macro-card m-carbs">
-                <div class="m-name">Carbs</div>
+                <div class="m-name" data-i18n="macro.carbs">Carbs</div>
                 <div class="grams"><span id="macro-carbs-g">—</span><span class="g">g</span></div>
                 <div class="m-kcal"><span id="macro-carbs-kcal">—</span> kcal · <span id="macro-carbs-pct">—</span>%</div>
               </div>
               <div class="macro-card m-fat">
-                <div class="m-name">Fat</div>
+                <div class="m-name" data-i18n="macro.fat">Fat</div>
                 <div class="grams"><span id="macro-fat-g">—</span><span class="g">g</span></div>
                 <div class="m-kcal"><span id="macro-fat-kcal">—</span> kcal · <span id="macro-fat-pct">—</span>%</div>
               </div>
@@ -337,27 +357,27 @@
               <span class="sb-fat" id="macro-bar-fat" style="width: 33%"></span>
             </div>
             <div class="split-legend" aria-hidden="true">
-              <span><i class="lg-protein"></i>Protein · 4 kcal/g</span>
-              <span><i class="lg-carbs"></i>Carbs · 4 kcal/g</span>
-              <span><i class="lg-fat"></i>Fat · 9 kcal/g</span>
+              <span><i class="lg-protein"></i><span data-i18n="legend.protein">Protein · 4 kcal/g</span></span>
+              <span><i class="lg-carbs"></i><span data-i18n="legend.carbs">Carbs · 4 kcal/g</span></span>
+              <span><i class="lg-fat"></i><span data-i18n="legend.fat">Fat · 9 kcal/g</span></span>
             </div>
 
             <div class="result-row">
-              <span class="k">Protein rule</span>
+              <span class="k" data-i18n="macros.proteinRule">Protein rule</span>
               <span class="v" id="macro-protein-note">—</span>
             </div>
             <div class="result-row">
-              <span class="k">Fat rule</span>
+              <span class="k" data-i18n="macros.fatRule">Fat rule</span>
               <span class="v" id="macro-fat-note">—</span>
             </div>
             <div class="result-row">
-              <span class="k">Carbs rule</span>
+              <span class="k" data-i18n="macros.carbsRule">Carbs rule</span>
               <span class="v" id="macro-carb-note">—</span>
             </div>
 
             <div class="warn-note" id="macro-warn" hidden></div>
 
-            <p class="disclaimer">General sports-nutrition defaults: protein 1.6–2.2 g/kg by goal, fat ~25–28% of calories, carbs fill the remainder. Adjust to preference, performance and how you feel.</p>
+            <p class="disclaimer" data-i18n="macros.disclaimer">General sports-nutrition defaults: protein 1.6–2.2 g/kg by goal, fat ~25–28% of calories, carbs fill the remainder. Adjust to preference, performance and how you feel.</p>
           </div>
         </div>
       </div>
@@ -365,48 +385,48 @@
 
     <!-- Water -->
     <section class="route" id="route-water" data-route="water" hidden>
-      <h1 class="page-title">Water Intake</h1>
-      <p class="page-subtitle">Daily hydration target in litres — training minutes come from your activity level.</p>
+      <h1 class="page-title" data-i18n="water.title">Water Intake</h1>
+      <p class="page-subtitle" data-i18n="water.subtitle">Daily hydration target in litres — training minutes come from your activity level.</p>
 
       <div class="calc-layout">
         <div class="panel">
-          <h3 class="results-heading">From your profile</h3>
+          <h3 class="results-heading" data-i18n="common.fromProfile">From your profile</h3>
           <div id="water-summary" class="summary-list"></div>
-          <a class="btn-secondary" href="#/profile">Edit profile</a>
+          <a class="btn-secondary" href="#/profile" data-i18n="common.editProfile">Edit profile</a>
         </div>
 
         <div class="panel">
           <div class="result-empty" id="water-empty">
-            <p>Set up your <a href="#/profile">profile</a> once — your water target appears here automatically.</p>
+            <p data-i18n="water.empty">Set up your <a href="#/profile">profile</a> once — your water target appears here automatically.</p>
           </div>
 
           <div id="water-output" hidden>
             <div class="result-hero">
-              <div class="value water"><span id="water-litres">—</span><span class="unit">L / day</span></div>
-              <div class="label">Daily water target</div>
+              <div class="value water"><span id="water-litres">—</span><span class="unit" data-i18n="water.heroUnit">L / day</span></div>
+              <div class="label" data-i18n="water.heroLabel">Daily water target</div>
             </div>
 
             <div class="cup-row" id="water-cups" aria-hidden="true"></div>
             <p class="cup-caption" id="water-cup-caption">—</p>
 
             <div class="result-row">
-              <span class="k">Base need (33 ml/kg)</span>
+              <span class="k" data-i18n="water.baseRow">Base need (33 ml/kg)</span>
               <span class="v" id="water-base">—</span>
             </div>
             <div class="result-row">
-              <span class="k">Training (+12 ml/min)</span>
+              <span class="k" data-i18n="water.trainRow">Training (+12 ml/min)</span>
               <span class="v" id="water-workout-add">—</span>
             </div>
             <div class="result-row">
-              <span class="k">Climate adder</span>
+              <span class="k" data-i18n="water.climateRow">Climate adder</span>
               <span class="v" id="water-climate-add">—</span>
             </div>
             <div class="result-row">
-              <span class="k">In 500 ml bottles</span>
+              <span class="k" data-i18n="water.bottleRow">In 500 ml bottles</span>
               <span class="v" id="water-bottles">—</span>
             </div>
 
-            <p class="disclaimer">General guideline — individual needs vary with sweat rate, diet and health. Coffee, tea and water-rich foods also count toward intake. With a heart or kidney condition, follow your doctor's fluid advice.</p>
+            <p class="disclaimer" data-i18n="water.disclaimer">General guideline — individual needs vary with sweat rate, diet and health. Coffee, tea and water-rich foods also count toward intake. With a heart or kidney condition, follow your doctor's fluid advice.</p>
           </div>
         </div>
       </div>
@@ -414,32 +434,32 @@
 
     <!-- Steps -->
     <section class="route" id="route-steps" data-route="steps" hidden>
-      <h1 class="page-title">Daily Steps</h1>
-      <p class="page-subtitle">Your step target — Cut goal switches it to weight-loss mode (+2,000 steps).</p>
+      <h1 class="page-title" data-i18n="steps.title">Daily Steps</h1>
+      <p class="page-subtitle" data-i18n="steps.subtitle">Your step target — Cut goal switches it to weight-loss mode (+2,000 steps).</p>
 
       <div class="calc-layout">
         <div class="panel">
-          <h3 class="results-heading">From your profile</h3>
+          <h3 class="results-heading" data-i18n="common.fromProfile">From your profile</h3>
           <div id="steps-summary" class="summary-list"></div>
-          <a class="btn-secondary" href="#/profile">Edit profile</a>
+          <a class="btn-secondary" href="#/profile" data-i18n="common.editProfile">Edit profile</a>
         </div>
 
         <div class="panel">
           <div class="result-empty" id="steps-empty">
-            <p>Set up your <a href="#/profile">profile</a> once — your step target appears here automatically.</p>
+            <p data-i18n="steps.empty">Set up your <a href="#/profile">profile</a> once — your step target appears here automatically.</p>
           </div>
 
           <div id="steps-output" hidden>
             <div class="result-hero">
-              <div class="value"><span id="steps-target">—</span><span class="unit">steps/day</span></div>
+              <div class="value"><span id="steps-target">—</span><span class="unit" data-i18n="steps.heroUnit">steps/day</span></div>
               <div class="label" id="steps-target-label">Daily step target</div>
             </div>
 
             <div class="steps-gauge" aria-hidden="true">
-              <span class="seg seg-low"     style="width: 29.33%" title="Under ~4,400 — sedentary range"></span>
-              <span class="seg seg-some"    style="width: 24%"    title="4,400–8,000 — health benefits start"></span>
-              <span class="seg seg-optimal" style="width: 26.67%" title="8,000–12,000 — optimal range for most adults"></span>
-              <span class="seg seg-high"    style="width: 20%"    title="12,000–15,000 — very active"></span>
+              <span class="seg seg-low"     style="width: 29.33%" data-i18n-title="steps.g1" title="Under ~4,400 — sedentary range"></span>
+              <span class="seg seg-some"    style="width: 24%"    data-i18n-title="steps.g2" title="4,400–8,000 — health benefits start"></span>
+              <span class="seg seg-optimal" style="width: 26.67%" data-i18n-title="steps.g3" title="8,000–12,000 — optimal range for most adults"></span>
+              <span class="seg seg-high"    style="width: 20%"    data-i18n-title="steps.g4" title="12,000–15,000 — very active"></span>
               <span class="gauge-marker" id="steps-marker" style="left: 0%"></span>
             </div>
             <div class="gauge-labels" aria-hidden="true">
@@ -447,27 +467,27 @@
             </div>
 
             <div class="result-row">
-              <span class="k">Research-backed range</span>
+              <span class="k" data-i18n="steps.rangeRow">Research-backed range</span>
               <span class="v" id="steps-range">—</span>
             </div>
             <div class="result-row">
-              <span class="k">Distance covered</span>
+              <span class="k" data-i18n="steps.distRow">Distance covered</span>
               <span class="v" id="steps-distance">—</span>
             </div>
             <div class="result-row">
-              <span class="k">Your stride (from height)</span>
+              <span class="k" data-i18n="steps.strideRow">Your stride (from height)</span>
               <span class="v" id="steps-stride">—</span>
             </div>
             <div class="result-row">
-              <span class="k">Calories burned walking these steps</span>
+              <span class="k" data-i18n="steps.kcalRow">Calories burned walking these steps</span>
               <span class="v" id="steps-kcal">—</span>
             </div>
             <div class="result-row">
-              <span class="k">Distance per week</span>
+              <span class="k" data-i18n="steps.weekRow">Distance per week</span>
               <span class="v" id="steps-week">—</span>
             </div>
 
-            <p class="disclaimer">Calorie estimate assumes a moderate pace (~4.8 km/h) on flat ground — hills and speed change it. Step targets are population averages; any increase over your current level helps. A cadence of ~100 steps/min counts as moderate intensity.</p>
+            <p class="disclaimer" data-i18n="steps.disclaimer">Calorie estimate assumes a moderate pace (~4.8 km/h) on flat ground — hills and speed change it. Step targets are population averages; any increase over your current level helps. A cadence of ~100 steps/min counts as moderate intensity.</p>
           </div>
         </div>
       </div>
@@ -475,24 +495,24 @@
 
     <!-- Timeline -->
     <section class="route" id="route-timeline" data-route="timeline" hidden>
-      <h1 class="page-title">Goal Weight Timeline</h1>
-      <p class="page-subtitle">When you'll reach your target weight on your goal's calorie plan — all from your profile.</p>
+      <h1 class="page-title" data-i18n="tl.title">Goal Weight Timeline</h1>
+      <p class="page-subtitle" data-i18n="tl.subtitle">When you'll reach your target weight on your goal's calorie plan — all from your profile.</p>
 
       <div class="calc-layout">
         <div class="panel">
-          <h3 class="results-heading">From your profile</h3>
+          <h3 class="results-heading" data-i18n="common.fromProfile">From your profile</h3>
           <div id="tl-summary" class="summary-list"></div>
-          <a class="btn-secondary" href="#/profile">Edit profile</a>
+          <a class="btn-secondary" href="#/profile" data-i18n="common.editProfile">Edit profile</a>
         </div>
 
         <div class="panel">
           <div class="result-empty" id="tl-empty">
-            <p>Set up your <a href="#/profile">profile</a> once — your timeline appears here automatically.</p>
+            <p data-i18n="tl.empty">Set up your <a href="#/profile">profile</a> once — your timeline appears here automatically.</p>
           </div>
 
           <div id="tl-output" hidden>
             <div class="result-hero">
-              <div class="value"><span id="tl-weeks">—</span><span class="unit">weeks</span></div>
+              <div class="value"><span id="tl-weeks">—</span><span class="unit" data-i18n="tl.heroUnit">weeks</span></div>
               <div class="label" id="tl-date-label">target date</div>
             </div>
 
@@ -510,48 +530,49 @@
             </div>
 
             <div class="result-row">
-              <span class="k">Total change</span>
+              <span class="k" data-i18n="row.totalChange">Total change</span>
               <span class="v" id="tl-total">—</span>
             </div>
             <div class="result-row">
-              <span class="k">Weekly rate</span>
+              <span class="k" data-i18n="row.weeklyRate">Weekly rate</span>
               <span class="v" id="tl-rate">—</span>
             </div>
             <div class="result-row">
-              <span class="k">Daily energy balance</span>
+              <span class="k" data-i18n="row.balance">Daily energy balance</span>
               <span class="v" id="tl-balance">—</span>
             </div>
 
-            <h3 class="results-heading">Milestones</h3>
+            <h3 class="results-heading" data-i18n="tl.milestones">Milestones</h3>
             <table class="goal-table">
               <thead>
-                <tr><th>Progress</th><th class="num">Weight (kg)</th><th class="num">By date</th></tr>
+                <tr><th data-i18n="th.progress">Progress</th><th class="num" data-i18n="th.weightKg">Weight (kg)</th><th class="num" data-i18n="th.byDate">By date</th></tr>
               </thead>
               <tbody id="tl-milestones"></tbody>
             </table>
 
             <div class="warn-note" id="tl-warn" hidden></div>
 
-            <p class="disclaimer">Linear projection — real weight change isn't perfectly linear (water, adherence, metabolic adaptation), so re-run this every few weeks. Safe pace: ~0.5–1% of body weight per week when cutting, ~0.25–0.5% when bulking.</p>
+            <p class="disclaimer" data-i18n="tl.disclaimer">Linear projection — real weight change isn't perfectly linear (water, adherence, metabolic adaptation), so re-run this every few weeks. Safe pace: ~0.5–1% of body weight per week when cutting, ~0.25–0.5% when bulking.</p>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- Diet plan -->
     <section class="route" id="route-diet" data-route="diet" hidden>
-      <h1 class="page-title">7-Day Diet Plan 🍛</h1>
-      <p class="page-subtitle">Pakistani home-style meals — automatically portioned to your goal's calorie and protein targets. Edit your profile and the whole week re-scales.</p>
+      <h1 class="page-title" data-i18n="diet.title">7-Day Diet Plan 🍛</h1>
+      <p class="page-subtitle" data-i18n="diet.subtitle">Pakistani home-style meals — automatically portioned to your goal's calorie and protein targets. Edit your profile and the whole week re-scales.</p>
 
       <div class="calc-layout">
         <div class="panel">
-          <h3 class="results-heading">From your profile</h3>
+          <h3 class="results-heading" data-i18n="common.fromProfile">From your profile</h3>
           <div id="diet-summary" class="summary-list"></div>
-          <a class="btn-secondary" href="#/profile">Edit profile</a>
+          <a class="btn-secondary" href="#/profile" data-i18n="common.editProfile">Edit profile</a>
         </div>
 
         <div class="panel">
           <div class="result-empty" id="diet-empty">
-            <p>Set up your <a href="#/profile">profile</a> once — your 7-day Pakistani meal plan appears here automatically.</p>
+            <p data-i18n="diet.empty">Set up your <a href="#/profile">profile</a> once — your 7-day Pakistani meal plan appears here automatically.</p>
           </div>
 
           <div id="diet-output" hidden>
@@ -559,7 +580,7 @@
             <div id="diet-day"></div>
             <div class="diet-week panel-inset" id="diet-week"></div>
 
-            <p class="disclaimer">Estimates assume home-style Pakistani cooking with moderate oil/ghee — restaurant and street-food portions can be 1.5–2× larger. Swap freely within a category (daal ↔ daal, sabzi ↔ sabzi, roti ↔ rice at 1 roti ≈ 75 g rice). Not medical advice — consult a dietitian for clinical conditions.</p>
+            <p class="disclaimer" data-i18n="diet.disclaimer">Estimates assume home-style Pakistani cooking with moderate oil/ghee — restaurant and street-food portions can be 1.5–2× larger. Swap freely within a category (daal ↔ daal, sabzi ↔ sabzi, roti ↔ rice at 1 roti ≈ 75 g rice). Not medical advice — consult a dietitian for clinical conditions.</p>
           </div>
         </div>
       </div>
@@ -570,21 +591,22 @@
   <!-- ============ FOOTER ============ -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <p>FitCalc — educational tool, not medical advice.</p>
-      <p class="footer-credit">Developed by <strong>Tausif Rasool</strong></p>
+      <p data-i18n="footer.note">FitCalc — educational tool, not medical advice.</p>
+      <p class="footer-credit" data-i18n="footer.credit">Developed by <strong>Tausif Rasool</strong></p>
     </div>
   </footer>
 
-  <script src="js/app.js?v=10"></script>
-  <script src="js/profile.js?v=10"></script>
-  <script src="js/bmi.js?v=10"></script>
-  <script src="js/bmr.js?v=10"></script>
-  <script src="js/macros.js?v=10"></script>
-  <script src="js/water.js?v=10"></script>
-  <script src="js/steps.js?v=10"></script>
-  <script src="js/timeline.js?v=10"></script>
-  <script src="js/diet.js?v=10"></script>
-  <script src="js/pdf.js?v=10"></script>
-  <script src="js/report.js?v=10"></script>
+  <script src="js/i18n.js?v=11"></script>
+  <script src="js/app.js?v=11"></script>
+  <script src="js/profile.js?v=11"></script>
+  <script src="js/bmi.js?v=11"></script>
+  <script src="js/bmr.js?v=11"></script>
+  <script src="js/macros.js?v=11"></script>
+  <script src="js/water.js?v=11"></script>
+  <script src="js/steps.js?v=11"></script>
+  <script src="js/timeline.js?v=11"></script>
+  <script src="js/diet.js?v=11"></script>
+  <script src="js/pdf.js?v=11"></script>
+  <script src="js/report.js?v=11"></script>
 </body>
 </html>

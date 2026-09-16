@@ -2,7 +2,9 @@
 
 **Developed by Tausif Rasool**
 
-A dark, sporty fitness calculator webapp — **plain HTML/CSS/JS, zero dependencies**.
+A dark, sporty fitness calculator webapp — **plain HTML/CSS/JS, zero dependencies**, fully **bilingual: English and Urdu (اردو, RTL)**.
+
+On first launch a full-screen language gate offers two big buttons — **English** and **اردو**. The choice is remembered (localStorage) and a header pill switches language live at any time. In Urdu mode the entire app flips to RTL with a Nastaliq font stack: every label, result, warning, day chip and even the diet-plan food names are translated. (The PDF report stays English — Urdu script needs font embedding and text shaping, which a dependency-free PDF engine can't do.)
 
 All calculations use fixed units: **weight in kg, height in inches**.
 
@@ -46,6 +48,7 @@ fitness-calculator/
 ├── css/
 │   └── style.css     # dark sporty design system (volt accent, cards, gauges, tables)
 └── js/
+    ├── i18n.js       # language gate + English/Urdu dictionary + t() engine
     ├── app.js        # shell: hash-based tab routing
     ├── profile.js    # shared profile store (localStorage) + derived calc helpers
     ├── bmi.js        # BMI (kg + inches)

@@ -3,6 +3,8 @@
    The user enters their stats ONCE (Profile tab); every
    calculator renders from this shared state.
    Persisted in localStorage — never leaves the browser.
+   NOTE: the plain label maps below stay ENGLISH — the PDF
+   report uses them. The UI reads translated labels via i18n.
    ============================================================ */
 
 (function () {
@@ -10,6 +12,7 @@
 
   var STORE_KEY = "fitcalc-profile-v1";
 
+  // English constants — used by js/report.js (PDF is always English)
   var ACTIVITY_LABELS = {
     "1.2": "Sedentary",
     "1.375": "Light (1–3 d/wk)",
@@ -17,14 +20,17 @@
     "1.725": "Very active (6–7 d/wk)",
     "1.9": "Athlete (2×/day)",
   };
+  var CLIMATE_LABELS = { 0: "Temperate", 500: "Hot / humid", 750: "Hot & dry / altitude" };
+  var GOAL_LABELS = { cut: "Cut", maintain: "Maintain", bulk: "Lean bulk" };
 
   // Training minutes per day derived from activity level (used by Water)
   var TRAIN_MIN = { "1.2": 0, "1.375": 30, "1.55": 45, "1.725": 60, "1.9": 90 };
 
-  var CLIMATE_LABELS = { 0: "Temperate", 500: "Hot / humid", 750: "Hot & dry / altitude" };
-  var GOAL_LABELS = { cut: "Cut", maintain: "Maintain", bulk: "Lean bulk" };
-
   window.FitCalc = window.FitCalc || {};
+
+  function t(key, params) {
+    return FitCalc.i18n ? FitCalc.i18n.t(key, params) : key;
+  }
 
   var state = null;
   var listeners = [];
@@ -82,10 +88,10 @@
     },
     /* Calorie target for the profile goal (same numbers the BMR tab shows) */
     targetKcal: function (p) {
-      var t = FitCalc.calc.tdee(p);
-      if (p.goal === "cut") return t - 500;
-      if (p.goal === "bulk") return t + 250;
-      return t;
+      var t2 = FitCalc.calc.tdee(p);
+      if (p.goal === "cut") return t2 - 500;
+      if (p.goal === "bulk") return t2 + 250;
+      return t2;
     },
     trainingMin: function (p) {
       return TRAIN_MIN[String(p.activity)] || 0;
@@ -95,6 +101,7 @@
     },
   };
 
+  // English label maps (PDF report); UI modules use t() keys instead
   FitCalc.labels = {
     activity: ACTIVITY_LABELS,
     climate: CLIMATE_LABELS,
@@ -163,12 +170,12 @@
       .trim()
       .slice(0, 40);
 
-    if (!sexEl || !goalEl) return { error: "Please choose sex and goal." };
-    if (isNaN(age) || age < 15 || age > 100) return { error: "Age must be between 15 and 100 years." };
-    if (isNaN(weight) || weight < 20 || weight > 400) return { error: "Weight must be between 20 and 400 kg." };
-    if (isNaN(height) || height < 36 || height > 96) return { error: "Height must be between 36 and 96 inches (3–8 ft)." };
+    if (!sexEl || !goalEl) return { error: t("err.sexGoal") };
+    if (isNaN(age) || age < 15 || age > 100) return { error: t("err.age") };
+    if (isNaN(weight) || weight < 20 || weight > 400) return { error: t("err.weight") };
+    if (isNaN(height) || height < 36 || height > 96) return { error: t("err.height") };
     if (goalWeight !== null && (isNaN(goalWeight) || goalWeight < 20 || goalWeight > 400)) {
-      return { error: "Target weight must be between 20 and 400 kg (or left blank)." };
+      return { error: t("err.goalWeight") };
     }
 
     return {
@@ -191,23 +198,25 @@
     if (!state) {
       el.className = "profile-status is-empty";
       el.innerHTML =
-        "<span>👋 <strong>Start here:</strong> enter your stats once — every calculator fills itself in automatically.</span>" +
-        '<a class="btn-mini" href="#/profile">Set up profile</a>';
+        "<span>" + t("banner.start") + "</span>" +
+        '<a class="btn-mini" href="#/profile">' + t("banner.setup") + "</a>";
       return;
     }
 
     var p = state;
+    var goalPart = t("banner.goal", { g: t("goal." + p.goal) }) +
+      (p.goalWeightKg ? " → " + p.goalWeightKg + " kg" : "");
     var parts = [
-      (p.sex === "male" ? "Male" : "Female") + ", " + p.age + "y",
+      t("banner.sexage", { sex: t(p.sex === "male" ? "form.male" : "form.female"), age: p.age }),
       p.weightKg + " kg",
       p.heightIn + " in",
-      ACTIVITY_LABELS[String(p.activity)] || "—",
-      "Goal: " + GOAL_LABELS[p.goal] + (p.goalWeightKg ? " → " + p.goalWeightKg + " kg" : ""),
+      t("activityShort." + p.activity),
+      goalPart,
     ];
     el.className = "profile-status is-saved";
     el.innerHTML =
       "<span>✔ <strong>" + (p.name ? p.name + " — " : "") + parts.join(" · ") + "</strong></span>" +
-      '<a class="btn-mini" href="#/profile">Edit</a>';
+      '<a class="btn-mini" href="#/profile">' + t("common.editProfile") + "</a>";
   }
 
   function onSubmit(e) {
@@ -225,7 +234,7 @@
 
     FitCalc.profile.save(v);
     var note = $("pf-note");
-    note.textContent = "Profile saved — all six calculators updated ✔";
+    note.textContent = t("profile.saved");
     note.hidden = false;
   }
 
@@ -234,5 +243,6 @@
     updateBanner();
     $("pf-form").addEventListener("submit", onSubmit);
     FitCalc.profile.onChange(updateBanner);
+    if (FitCalc.i18n) FitCalc.i18n.onChange(updateBanner);
   });
 })();

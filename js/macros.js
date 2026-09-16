@@ -1,5 +1,5 @@
 /* ============================================================
-   FitCalc — Macro Split (renders from the shared profile)
+   FitCalc — Macro Split (renders from the shared profile, translated)
    Calories = TDEE adjusted by the profile goal:
      cut −500 · maintain = TDEE · lean bulk +250
    Protein 1.6–2.2 g/kg by goal · fat 25–27.5% · carbs remainder
@@ -11,24 +11,9 @@
   var KCAL_PER_G = { protein: 4, carbs: 4, fat: 9 };
 
   var GOALS = {
-    cut: {
-      proteinGPerKg: 2.2,
-      fatPct: 0.25,
-      proteinNote: "2.2 g/kg — higher protein preserves muscle in a deficit",
-      fatNote: "25% of calories",
-    },
-    maintain: {
-      proteinGPerKg: 1.8,
-      fatPct: 0.275,
-      proteinNote: "1.8 g/kg — plenty for maintenance and training",
-      fatNote: "27.5% of calories",
-    },
-    bulk: {
-      proteinGPerKg: 1.6,
-      fatPct: 0.25,
-      proteinNote: "1.6 g/kg — surplus calories spare protein for growth",
-      fatNote: "25% of calories",
-    },
+    cut:      { proteinGPerKg: 2.2, fatPct: 0.25,  pNote: "macros.pNote.cut",      fNote: "macros.fNote.25" },
+    maintain: { proteinGPerKg: 1.8, fatPct: 0.275, pNote: "macros.pNote.maintain", fNote: "macros.fNote.275" },
+    bulk:     { proteinGPerKg: 1.6, fatPct: 0.25,  pNote: "macros.pNote.bulk",     fNote: "macros.fNote.25" },
   };
 
   var PROTEIN_CAP_PCT = 0.35;
@@ -36,6 +21,10 @@
 
   function $(id) {
     return document.getElementById(id);
+  }
+
+  function t(key, params) {
+    return FitCalc.i18n.t(key, params);
   }
 
   function fmt0(n) {
@@ -66,10 +55,7 @@
     if (proteinKcal > capKcal) {
       proteinKcal = capKcal;
       proteinG = proteinKcal / KCAL_PER_G.protein;
-      warnings.push(
-        "Protein capped at 35% of calories (" + fmt0(proteinG) +
-        " g) — your calorie target is low for your body weight."
-      );
+      warnings.push(t("macros.warnCap", { g: fmt0(proteinG) }));
     }
 
     var fatKcal = calories * g.fatPct;
@@ -78,15 +64,13 @@
     var carbKcal = Math.max(0, calories - proteinKcal - fatKcal);
     var carbG = carbKcal / KCAL_PER_G.carbs;
     if (carbKcal / calories < LOW_CARB_PCT) {
-      warnings.push(
-        "Carbs come out very low (< 10% of calories). If you train hard, consider a smaller deficit."
-      );
+      warnings.push(t("macros.warnLowCarb"));
     }
 
     FitCalc.ui.summary("macros-summary", [
-      ["Goal", FitCalc.labels.goal[p.goal]],
-      ["Daily calories", fmt0(calories) + " kcal (from your TDEE)"],
-      ["Weight", p.weightKg + " kg"],
+      [t("row.goal"), t("goal." + p.goal)],
+      [t("row.dailyCalories"), t("macros.calVal", { c: fmt0(calories) })],
+      [t("row.weight"), p.weightKg + " kg"],
     ]);
 
     $("macro-empty").hidden = true;
@@ -100,9 +84,9 @@
     $("macro-bar-carbs").style.width = (carbKcal / calories) * 100 + "%";
     $("macro-bar-fat").style.width = (fatKcal / calories) * 100 + "%";
 
-    $("macro-protein-note").textContent = g.proteinNote;
-    $("macro-fat-note").textContent = g.fatNote;
-    $("macro-carb-note").textContent = "Remaining calories after protein & fat";
+    $("macro-protein-note").textContent = t(g.pNote);
+    $("macro-fat-note").textContent = t(g.fNote);
+    $("macro-carb-note").textContent = t("macros.cNote");
 
     var warn = $("macro-warn");
     if (warnings.length) {
@@ -115,6 +99,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     FitCalc.profile.onChange(render);
+    FitCalc.i18n.onChange(render);
     render();
   });
 })();

@@ -1,5 +1,5 @@
 /* ============================================================
-   FitCalc — BMI (renders from the shared profile)
+   FitCalc — BMI (renders from the shared profile, translated)
    BMI = kg / (m^2), m = inches × 0.0254
    ============================================================ */
 
@@ -13,13 +13,17 @@
     return document.getElementById(id);
   }
 
+  function t(key, params) {
+    return FitCalc.i18n.t(key, params);
+  }
+
   function categoryFor(bmi) {
-    if (bmi < 18.5) return { label: "Underweight", cls: "cat-under" };
-    if (bmi < 25)   return { label: "Normal",      cls: "cat-normal" };
-    if (bmi < 30)   return { label: "Overweight",  cls: "cat-over" };
-    if (bmi < 35)   return { label: "Obese · Class I",  cls: "cat-obese" };
-    if (bmi < 40)   return { label: "Obese · Class II", cls: "cat-obese" };
-    return { label: "Obese · Class III", cls: "cat-obese" };
+    if (bmi < 18.5) return { key: "bmi.cat.under", cls: "cat-under" };
+    if (bmi < 25)   return { key: "bmi.cat.normal", cls: "cat-normal" };
+    if (bmi < 30)   return { key: "bmi.cat.over", cls: "cat-over" };
+    if (bmi < 35)   return { key: "bmi.cat.obese1", cls: "cat-obese" };
+    if (bmi < 40)   return { key: "bmi.cat.obese2", cls: "cat-obese" };
+    return { key: "bmi.cat.obese3", cls: "cat-obese" };
   }
 
   function showEmpty() {
@@ -42,16 +46,16 @@
 
     var distance;
     if (bmi < 18.5) {
-      distance = "Gain " + (lowKg - p.weightKg).toFixed(1) + " kg to reach BMI 18.5";
+      distance = t("bmi.gain", { x: (lowKg - p.weightKg).toFixed(1) });
     } else if (bmi > 24.9) {
-      distance = "Lose " + (p.weightKg - highKg).toFixed(1) + " kg to reach BMI 24.9";
+      distance = t("bmi.lose", { x: (p.weightKg - highKg).toFixed(1) });
     } else {
-      distance = "In range — no change needed 💪";
+      distance = t("bmi.inRange");
     }
 
     FitCalc.ui.summary("bmi-summary", [
-      ["Weight", p.weightKg + " kg"],
-      ["Height", p.heightIn + " in"],
+      [t("row.weight"), p.weightKg + " kg"],
+      [t("row.height"), p.heightIn + " in"],
     ]);
 
     $("bmi-empty").hidden = true;
@@ -59,7 +63,7 @@
 
     $("bmi-value").textContent = bmi.toFixed(1);
     var catEl = $("bmi-category");
-    catEl.textContent = cat.label;
+    catEl.textContent = t(cat.key);
     catEl.className = cat.cls;
 
     var pct = ((bmi - GAUGE_MIN) / (GAUGE_MAX - GAUGE_MIN)) * 100;
@@ -70,6 +74,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     FitCalc.profile.onChange(render);
+    FitCalc.i18n.onChange(render);
     render();
   });
 })();

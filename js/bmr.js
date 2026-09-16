@@ -1,5 +1,5 @@
 /* ============================================================
-   FitCalc — BMR & TDEE (renders from the shared profile)
+   FitCalc — BMR & TDEE (renders from the shared profile, translated)
    Mifflin-St Jeor; the goal row matching the profile goal is
    highlighted as "your plan".
    ============================================================ */
@@ -15,24 +15,28 @@
     return document.getElementById(id);
   }
 
+  function t(key, params) {
+    return FitCalc.i18n.t(key, params);
+  }
+
   function fmt0(n) {
     return Math.round(n).toLocaleString("en-US");
   }
 
   function rateLabel(deltaKcal) {
-    if (Math.abs(deltaKcal) < 25) return "maintain";
+    if (Math.abs(deltaKcal) < 25) return t("rate.maintain");
     var kgPerWeek = (Math.abs(deltaKcal) * 7) / KCAL_PER_KG;
     var sign = deltaKcal < 0 ? "\u2212" : "+";
-    return sign + kgPerWeek.toFixed(2) + " kg/wk";
+    return t("rate.change", { v: sign + kgPerWeek.toFixed(2) });
   }
 
   function goalRows(tdee) {
     return [
-      { key: "cut",      name: "Aggressive cut", kcal: tdee * 0.8, delta: tdee * 0.8 - tdee, note: "−20%" },
-      { key: "cut",      name: "Moderate cut",   kcal: tdee - 500, delta: -500, note: "−500 kcal", primary: true },
-      { key: "maintain", name: "Maintenance",    kcal: tdee,       delta: 0,    note: "TDEE",      primary: true },
-      { key: "bulk",     name: "Lean bulk",      kcal: tdee + 250, delta: 250,  note: "+250 kcal", primary: true },
-      { key: "bulk",     name: "Bulk",           kcal: tdee + 500, delta: 500,  note: "+500 kcal" },
+      { key: "cut",      nameKey: "goalrow.cut20",   kcal: tdee * 0.8, delta: tdee * 0.8 - tdee, note: "−20%" },
+      { key: "cut",      nameKey: "goalrow.cut500",  kcal: tdee - 500, delta: -500, note: "−500 kcal", primary: true },
+      { key: "maintain", nameKey: "goalrow.maint",   kcal: tdee,       delta: 0,    note: "TDEE",      primary: true },
+      { key: "bulk",     nameKey: "goalrow.bulk250", kcal: tdee + 250, delta: 250,  note: "+250 kcal", primary: true },
+      { key: "bulk",     nameKey: "goalrow.bulk500", kcal: tdee + 500, delta: 500,  note: "+500 kcal" },
     ];
   }
 
@@ -47,8 +51,8 @@
 
       var tdName = document.createElement("td");
       tdName.innerHTML =
-        '<span class="goal-name">' + g.name + "</span>" +
-        '<span class="goal-note">' + g.note + (isPlan ? " · your plan" : "") + "</span>";
+        '<span class="goal-name">' + t(g.nameKey) + "</span>" +
+        '<span class="goal-note">' + g.note + (isPlan ? t("plan.you") : "") + "</span>";
 
       var tdKcal = document.createElement("td");
       tdKcal.className = "num kcal";
@@ -77,11 +81,11 @@
     var tdee = FitCalc.calc.tdee(p);
 
     FitCalc.ui.summary("bmr-summary", [
-      ["Sex", p.sex === "male" ? "Male" : "Female"],
-      ["Age", p.age + " years"],
-      ["Weight", p.weightKg + " kg"],
-      ["Height", p.heightIn + " in"],
-      ["Activity", FitCalc.labels.activity[String(p.activity)] || "—"],
+      [t("row.sex"), t(p.sex === "male" ? "form.male" : "form.female")],
+      [t("row.age"), t("val.ageYears", { n: p.age })],
+      [t("row.weight"), p.weightKg + " kg"],
+      [t("row.height"), p.heightIn + " in"],
+      [t("row.activity"), t("activityShort." + p.activity)],
     ]);
 
     $("bmr-empty").hidden = true;
@@ -96,9 +100,7 @@
     var floor = p.sex === "male" ? FLOOR_MALE : FLOOR_FEMALE;
     var warn = $("bmr-warn");
     if (tdee * 0.8 < floor) {
-      warn.textContent =
-        "Heads up: an aggressive cut would put you below " + fmt0(floor) +
-        " kcal/day — a commonly used minimum. Consider the moderate cut instead.";
+      warn.textContent = t("bmr.warn", { f: fmt0(floor) });
       warn.hidden = false;
     } else {
       warn.hidden = true;
@@ -107,6 +109,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     FitCalc.profile.onChange(render);
+    FitCalc.i18n.onChange(render);
     render();
   });
 })();

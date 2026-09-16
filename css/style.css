@@ -1140,3 +1140,141 @@ body {
   .main-content { padding: 26px 16px 44px; }
   .panel { padding: 20px; }
 }
+
+/* ============ Language gate ============ */
+.lang-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(1000px 500px at 80% -10%, rgba(200, 255, 46, 0.08), transparent 60%),
+    radial-gradient(800px 400px at 10% 110%, rgba(76, 195, 255, 0.06), transparent 60%),
+    var(--bg);
+}
+
+.lang-gate[hidden] { display: none; }
+
+.lang-gate-card {
+  width: min(680px, 100%);
+  text-align: center;
+  padding: 44px 32px 36px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.lang-gate-brand {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.lang-gate-brand em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.lang-gate-title {
+  margin: 10px 0 26px;
+  color: var(--text-dim);
+  font-size: 1.05rem;
+}
+
+.lang-gate-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.lang-btn {
+  flex: 1 1 220px;
+  max-width: 280px;
+  padding: 26px 20px;
+  border-radius: 16px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  display: grid;
+  gap: 8px;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lang-btn:hover,
+.lang-btn:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px var(--accent-glow);
+}
+
+.lang-btn-name {
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+#lang-ur .lang-btn-name {
+  font-family: "Noto Nastaliq Urdu", "Urdu Typesetting", "Jameel Noori Nastaleeq", serif;
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.lang-btn-sub {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.lang-gate-note {
+  margin: 26px 0 0;
+  color: var(--text-faint);
+  font-size: 0.82rem;
+}
+
+/* ============ Header language switcher ============ */
+.lang-switch {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.lang-switch:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ============ Urdu / RTL mode ============ */
+html[dir="rtl"] body {
+  font-family: "Noto Nastaliq Urdu", "Urdu Typesetting", "Jameel Noori Nastaleeq",
+    "Nafees Web Naskh", "Segoe UI", system-ui, -apple-system, sans-serif;
+  line-height: 2;
+}
+
+html[dir="rtl"] .page-title { line-height: 1.9; }
+html[dir="rtl"] .nav-tab { line-height: 1.7; }
+html[dir="rtl"] .btn-primary,
+html[dir="rtl"] .btn-secondary,
+html[dir="rtl"] .btn-mini,
+html[dir="rtl"] .day-chip,
+html[dir="rtl"] .lang-switch { line-height: 1.7; }
+html[dir="rtl"] .result-hero .label { line-height: 1.8; }
+html[dir="rtl"] .meal-head { line-height: 1.8; }
+
+/* bars & gauges keep their LTR direction in RTL mode */
+html[dir="rtl"] .bmi-gauge,
+html[dir="rtl"] .steps-gauge,
+html[dir="rtl"] .split-bar,
+html[dir="rtl"] .match-bar,
+html[dir="rtl"] .cup-row,
+html[dir="rtl"] .journey-track {
+  direction: ltr;
+}

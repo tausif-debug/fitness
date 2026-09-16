@@ -1,7 +1,6 @@
 /* ============================================================
-   FitCalc — app shell (Step 1)
-   Hash-based routing between calculator views.
-   Later steps: each calculator registers itself here.
+   FitCalc — app shell
+   Hash-based routing between calculator views + i18n titles.
    ============================================================ */
 
 (function () {
@@ -9,6 +8,10 @@
 
   var ROUTES = ["overview", "profile", "bmi", "bmr", "macros", "water", "steps", "timeline", "diet"];
   var DEFAULT_ROUTE = "overview";
+
+  function t(key) {
+    return window.FitCalc && FitCalc.i18n ? FitCalc.i18n.t(key) : key;
+  }
 
   function currentRoute() {
     var hash = window.location.hash.replace(/^#\/?/, "");
@@ -27,22 +30,11 @@
       tab.classList.toggle("is-active", tab.dataset.route === route);
     });
 
-    // Scroll to top on route change (except initial load keeps position)
+    // Scroll to top on route change
     window.scrollTo({ top: 0 });
 
-    // Update document title
-    var titles = {
-      overview: "FitCalc — Gym Fitness Calculators",
-      profile: "My Profile — FitCalc",
-      bmi: "BMI Calculator — FitCalc",
-      bmr: "BMR & TDEE — FitCalc",
-      macros: "Macro Split — FitCalc",
-      water: "Water Intake — FitCalc",
-      steps: "Daily Steps — FitCalc",
-      timeline: "Goal Weight Timeline — FitCalc",
-      diet: "7-Day Diet Plan — FitCalc",
-    };
-    document.title = titles[route] || titles[DEFAULT_ROUTE];
+    // Update document title (translated)
+    document.title = t("title." + route);
   }
 
   function onHashChange() {
@@ -50,5 +42,12 @@
   }
 
   window.addEventListener("hashchange", onHashChange);
-  window.addEventListener("DOMContentLoaded", onHashChange);
+  document.addEventListener("DOMContentLoaded", function () {
+    onHashChange();
+    if (window.FitCalc && FitCalc.i18n) {
+      FitCalc.i18n.onChange(function () {
+        document.title = t("title." + currentRoute());
+      });
+    }
+  });
 })();
