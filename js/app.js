@@ -7,7 +7,7 @@
 (function () {
   "use strict";
 
-  var ROUTES = ["overview", "bmi", "bmr", "hrzones", "macros", "water"];
+  var ROUTES = ["overview", "bmi", "bmr", "macros", "water"];
   var DEFAULT_ROUTE = "overview";
 
   function currentRoute() {
@@ -35,7 +35,6 @@
       overview: "FitCalc — Gym Fitness Calculators",
       bmi: "BMI Calculator — FitCalc",
       bmr: "BMR & TDEE — FitCalc",
-      hrzones: "Heart Rate Zones — FitCalc",
       macros: "Macro Split — FitCalc",
       water: "Water Intake — FitCalc",
     };

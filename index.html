@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FitCalc — Gym Fitness Calculators</title>
-  <meta name="description" content="A collection of gym-focused fitness calculators: BMI, BMR & TDEE, heart rate zones, and macro split." />
-  <link rel="stylesheet" href="css/style.css?v=2" />
+  <meta name="description" content="A collection of gym-focused fitness calculators: BMI, BMR & TDEE, macro split, and water intake." />
+  <link rel="stylesheet" href="css/style.css?v=3" />
 </head>
 <body>
 
@@ -30,7 +30,6 @@
       <a href="#/overview" class="nav-tab" data-route="overview">Overview</a>
       <a href="#/bmi"        class="nav-tab" data-route="bmi">BMI</a>
       <a href="#/bmr"        class="nav-tab" data-route="bmr">BMR &amp; TDEE</a>
-      <a href="#/hrzones"    class="nav-tab" data-route="hrzones">HR Zones</a>
       <a href="#/macros"     class="nav-tab" data-route="macros">Macros</a>
       <a href="#/water"      class="nav-tab" data-route="water">Water</a>
     </div>
@@ -42,7 +41,7 @@
     <!-- Overview -->
     <section class="route" id="route-overview" data-route="overview">
       <h1 class="page-title">Your Gym Toolkit</h1>
-      <p class="page-subtitle">Five calculators, built step by step. Each one goes live as we add it.</p>
+      <p class="page-subtitle">Four calculators, built step by step. Each one goes live as we add it.</p>
 
       <div class="calc-grid">
         <a class="calc-card is-live" href="#/bmi">
@@ -54,11 +53,6 @@
           <div class="calc-card-status is-live">Live</div>
           <h2>BMR &amp; TDEE</h2>
           <p>Mifflin-St Jeor BMR and maintenance calories from kg + inches, with cut/bulk targets and estimated weekly change.</p>
-        </a>
-        <a class="calc-card is-live" href="#/hrzones">
-          <div class="calc-card-status is-live">Live</div>
-          <h2>Heart Rate Zones</h2>
-          <p>Z1–Z5 target zones from age (Tanaka max HR) or a known max — with optional Karvonen HRR method.</p>
         </a>
         <a class="calc-card is-live" href="#/macros">
           <div class="calc-card-status is-live">Live</div>
@@ -223,81 +217,6 @@
             <div class="warn-note" id="bmr-warn" hidden></div>
 
             <p class="disclaimer">Estimates assume 1 kg of body tissue ≈ 7,700 kcal. Real-world results vary ±10% — track your weight for 2 weeks and adjust.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- HR Zones -->
-    <section class="route" id="route-hrzones" data-route="hrzones" hidden>
-      <h1 class="page-title">Heart Rate Zones</h1>
-      <p class="page-subtitle">Target training zones Z1–Z5 — train the right energy system for the adaptation you want.</p>
-
-      <div class="calc-layout">
-        <!-- Form -->
-        <div class="panel">
-          <form id="hr-form" novalidate>
-            <div class="field">
-              <label>Method</label>
-              <div class="seg-choice">
-                <label class="seg-option">
-                  <input type="radio" name="hr-method" value="max" checked />
-                  <span>% of Max HR</span>
-                </label>
-                <label class="seg-option">
-                  <input type="radio" name="hr-method" value="karvonen" />
-                  <span>Karvonen (HRR)</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="field-row">
-              <div class="field">
-                <label for="hr-age">Age (years)</label>
-                <input type="number" id="hr-age" min="10" max="100" step="1" placeholder="e.g. 28" inputmode="numeric" />
-              </div>
-              <div class="field">
-                <label for="hr-resting">Resting HR (bpm) <span class="opt">Karvonen only</span></label>
-                <input type="number" id="hr-resting" min="30" max="120" step="1" placeholder="e.g. 60" inputmode="numeric" />
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="hr-max">Max HR override (bpm) <span class="opt">optional</span></label>
-              <input type="number" id="hr-max" min="100" max="220" step="1" placeholder="Leave blank to estimate from age" inputmode="numeric" />
-            </div>
-
-            <p class="hint">Tanaka formula: max HR = 208 − 0.68 × age. Know your true max from a field test? Override it. Resting HR is best measured lying down, first thing in the morning.</p>
-            <button type="submit" class="btn-primary">Calculate Zones</button>
-            <div class="error-msg" id="hr-error" hidden></div>
-          </form>
-        </div>
-
-        <!-- Results -->
-        <div class="panel">
-          <div class="result-empty" id="hr-empty">
-            <p>Enter your age (and resting HR for Karvonen) to get your <strong>max heart rate</strong> and five colour-coded training zones.</p>
-          </div>
-
-          <div id="hr-output" hidden>
-            <div class="result-hero">
-              <div class="value"><span id="hr-max-out">—</span><span class="unit">bpm</span></div>
-              <div class="label" id="hr-max-label">Max heart rate</div>
-            </div>
-
-            <div class="result-row">
-              <span class="k">Method</span>
-              <span class="v" id="hr-method-out">—</span>
-            </div>
-            <div class="result-row" id="hr-hrr-row" hidden>
-              <span class="k">Heart rate reserve (max − resting)</span>
-              <span class="v"><span id="hr-hrr">—</span> bpm</span>
-            </div>
-
-            <h3 class="results-heading">Training zones</h3>
-            <div class="zone-list" id="hr-zones"></div>
-
-            <p class="disclaimer">Zone boundaries are population estimates — individual physiology varies. If you take heart-rate-affecting medication (e.g. beta blockers) or have a cardiac condition, talk to a doctor before high-intensity training.</p>
           </div>
         </div>
       </div>
@@ -486,11 +405,10 @@
     </div>
   </footer>
 
-  <script src="js/app.js?v=2"></script>
-  <script src="js/bmi.js?v=2"></script>
-  <script src="js/bmr.js?v=2"></script>
-  <script src="js/hrzones.js?v=2"></script>
-  <script src="js/macros.js?v=2"></script>
-  <script src="js/water.js?v=2"></script>
+  <script src="js/app.js?v=3"></script>
+  <script src="js/bmi.js?v=3"></script>
+  <script src="js/bmr.js?v=3"></script>
+  <script src="js/macros.js?v=3"></script>
+  <script src="js/water.js?v=3"></script>
 </body>
 </html>
