@@ -1,9 +1,8 @@
 /* ============================================================
-   FitCalc — Water Intake Calculator
-   Units: weight in kg, output in litres/ml (fixed, per spec).
-   Base:     33 ml per kg body weight
-   Training: +12 ml per minute of exercise (~350 ml / 30 min)
-   Climate:  +0 / +500 / +750 ml (temperate / hot-humid / hot-dry)
+   FitCalc — Water Intake (renders from the shared profile)
+   Base 33 ml/kg + 12 ml per training minute + climate adder.
+   Training minutes are derived from the profile activity level:
+     sedentary 0 · light 30 · moderate 45 · very active 60 · athlete 90
    ============================================================ */
 
 (function () {
@@ -13,10 +12,6 @@
   var ML_PER_MIN = 12;
   var GLASS_ML = 250;
   var BOTTLE_ML = 500;
-
-  var WEIGHT_MIN = 20, WEIGHT_MAX = 400;   // kg
-  var WORKOUT_MAX = 300;                    // minutes/day
-
   var MAX_CUPS_SHOWN = 16;
 
   function $(id) {
@@ -53,10 +48,26 @@
     $("water-cup-caption").textContent = caption;
   }
 
-  function render(weightKg, workoutMin, climateMl) {
-    var baseMl = weightKg * ML_PER_KG;
+  function render() {
+    var p = window.FitCalc && FitCalc.profile.get();
+    if (!p) {
+      $("water-empty").hidden = false;
+      $("water-output").hidden = true;
+      return;
+    }
+
+    var workoutMin = FitCalc.calc.trainingMin(p);
+    var climateMl = p.climate || 0;
+
+    var baseMl = p.weightKg * ML_PER_KG;
     var workoutMl = workoutMin * ML_PER_MIN;
     var totalMl = baseMl + workoutMl + climateMl;
+
+    FitCalc.ui.summary("water-summary", [
+      ["Weight", p.weightKg + " kg"],
+      ["Training", workoutMin + " min/day (" + (FitCalc.labels.activity[String(p.activity)] || "—") + ")"],
+      ["Climate", FitCalc.labels.climate[String(climateMl)] || "Temperate"],
+    ]);
 
     $("water-empty").hidden = true;
     $("water-output").hidden = false;
@@ -71,61 +82,8 @@
     renderCups(totalMl);
   }
 
-  function showError(msg) {
-    var err = $("water-error");
-    err.textContent = msg;
-    err.hidden = false;
-    $("water-output").hidden = true;
-    $("water-empty").hidden = false;
-  }
-
-  function clearError() {
-    $("water-error").hidden = true;
-  }
-
-  function readForm() {
-    var weight = parseFloat($("water-weight").value);
-    var workoutRaw = $("water-workout").value.trim();
-    var workout = workoutRaw === "" ? 0 : parseFloat(workoutRaw);
-    var climate = parseFloat($("water-climate").value) || 0;
-
-    if (isNaN(weight)) {
-      return { error: "Please enter your weight (kg)." };
-    }
-    if (weight < WEIGHT_MIN || weight > WEIGHT_MAX) {
-      return { error: "Weight must be between " + WEIGHT_MIN + " and " + WEIGHT_MAX + " kg." };
-    }
-    if (isNaN(workout) || workout < 0 || workout > WORKOUT_MAX) {
-      return { error: "Training minutes must be between 0 and " + WORKOUT_MAX + "." };
-    }
-    return { weight: weight, workout: workout, climate: climate };
-  }
-
-  function onSubmit(e) {
-    e.preventDefault();
-    clearError();
-    var v = readForm();
-    if (v.error) {
-      showError(v.error);
-      return;
-    }
-    render(v.weight, v.workout, v.climate);
-  }
-
   document.addEventListener("DOMContentLoaded", function () {
-    $("water-form").addEventListener("submit", onSubmit);
-
-    // Live recalculation once a result is showing
-    function liveUpdate() {
-      if ($("water-output").hidden) return;
-      var v = readForm();
-      if (!v.error) {
-        clearError();
-        render(v.weight, v.workout, v.climate);
-      }
-    }
-
-    $("water-form").addEventListener("input", liveUpdate);
-    $("water-form").addEventListener("change", liveUpdate);
+    FitCalc.profile.onChange(render);
+    render();
   });
 })();

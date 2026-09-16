@@ -7,7 +7,7 @@
 (function () {
   "use strict";
 
-  var ROUTES = ["overview", "bmi", "bmr", "macros", "water", "steps", "timeline"];
+  var ROUTES = ["overview", "profile", "bmi", "bmr", "macros", "water", "steps", "timeline"];
   var DEFAULT_ROUTE = "overview";
 
   function currentRoute() {
@@ -33,6 +33,7 @@
     // Update document title
     var titles = {
       overview: "FitCalc — Gym Fitness Calculators",
+      profile: "My Profile — FitCalc",
       bmi: "BMI Calculator — FitCalc",
       bmr: "BMR & TDEE — FitCalc",
       macros: "Macro Split — FitCalc",

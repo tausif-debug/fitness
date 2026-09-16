@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FitCalc — Gym Fitness Calculators</title>
-  <meta name="description" content="A collection of gym-focused fitness calculators: BMI, BMR & TDEE, macro split, water intake, daily steps, and goal weight timeline." />
-  <link rel="stylesheet" href="css/style.css?v=6" />
+  <meta name="description" content="Enter your stats once — BMI, BMR & TDEE, macros, water intake, daily steps and goal timeline all calculate automatically." />
+  <link rel="stylesheet" href="css/style.css?v=7" />
 </head>
 <body>
 
@@ -28,12 +28,13 @@
   <nav class="site-nav" aria-label="Calculators">
     <div class="container nav-inner" id="nav-tabs">
       <a href="#/overview" class="nav-tab" data-route="overview">Overview</a>
-      <a href="#/bmi"        class="nav-tab" data-route="bmi">BMI</a>
-      <a href="#/bmr"        class="nav-tab" data-route="bmr">BMR &amp; TDEE</a>
-      <a href="#/macros"     class="nav-tab" data-route="macros">Macros</a>
-      <a href="#/water"      class="nav-tab" data-route="water">Water</a>
-      <a href="#/steps"      class="nav-tab" data-route="steps">Steps</a>
-      <a href="#/timeline"   class="nav-tab" data-route="timeline">Timeline</a>
+      <a href="#/profile"  class="nav-tab" data-route="profile">Profile</a>
+      <a href="#/bmi"      class="nav-tab" data-route="bmi">BMI</a>
+      <a href="#/bmr"      class="nav-tab" data-route="bmr">BMR &amp; TDEE</a>
+      <a href="#/macros"   class="nav-tab" data-route="macros">Macros</a>
+      <a href="#/water"    class="nav-tab" data-route="water">Water</a>
+      <a href="#/steps"    class="nav-tab" data-route="steps">Steps</a>
+      <a href="#/timeline" class="nav-tab" data-route="timeline">Timeline</a>
     </div>
   </nav>
 
@@ -49,69 +50,148 @@
         </svg>
         <span>Developed by <strong>Tausif Rasool</strong></span>
       </div>
-      <p class="page-subtitle">Six calculators, built step by step. Each one goes live as we add it.</p>
+      <p class="page-subtitle">One profile, six calculators. Enter your stats <strong>once</strong> — everything below fills in automatically.</p>
+
+      <div class="profile-status is-empty" id="profile-status"></div>
 
       <div class="calc-grid">
         <a class="calc-card is-live" href="#/bmi">
           <div class="calc-card-status is-live">Live</div>
           <h2>BMI</h2>
-          <p>Body Mass Index from weight (kg) and height (inches) — with category gauge and healthy weight range.</p>
+          <p>Body Mass Index from your weight (kg) and height (inches) — with category gauge and healthy weight range.</p>
         </a>
         <a class="calc-card is-live" href="#/bmr">
           <div class="calc-card-status is-live">Live</div>
           <h2>BMR &amp; TDEE</h2>
-          <p>Mifflin-St Jeor BMR and maintenance calories from kg + inches, with cut/bulk targets and estimated weekly change.</p>
+          <p>Mifflin-St Jeor BMR and maintenance calories, with all cut/bulk targets and your plan highlighted.</p>
         </a>
         <a class="calc-card is-live" href="#/macros">
           <div class="calc-card-status is-live">Live</div>
           <h2>Macro Split</h2>
-          <p>Protein / carbs / fat grams from your daily calories, weight (kg) and goal — cut, maintain, or lean bulk.</p>
+          <p>Protein / carbs / fat grams for your goal's calorie target — computed straight from your TDEE.</p>
         </a>
         <a class="calc-card is-live" href="#/water">
           <div class="calc-card-status is-live">Live</div>
           <h2>Water Intake</h2>
-          <p>Daily hydration target in litres from your weight, training minutes and climate — with glass &amp; bottle equivalents.</p>
+          <p>Daily hydration target in litres from your weight, training volume and climate.</p>
         </a>
         <a class="calc-card is-live" href="#/steps">
           <div class="calc-card-status is-live">Live</div>
           <h2>Daily Steps</h2>
-          <p>Research-based daily step target from your age and goal — with distance from height and calories from weight.</p>
+          <p>Research-based step target for your age and goal — with distance and calories burned.</p>
         </a>
         <a class="calc-card is-live" href="#/timeline">
           <div class="calc-card-status is-live">Live</div>
           <h2>Goal Timeline</h2>
-          <p>Weeks and target date to reach your goal weight from your calorie plan — with milestones and safe-pace checks.</p>
+          <p>When you'll hit your target weight on your goal's calorie plan — with milestone dates.</p>
         </a>
+      </div>
+    </section>
+
+    <!-- Profile -->
+    <section class="route" id="route-profile" data-route="profile" hidden>
+      <h1 class="page-title">My Profile</h1>
+      <p class="page-subtitle">Enter your stats <strong>once</strong> — every calculator reads from here. Saved in your browser only (localStorage); nothing is sent anywhere.</p>
+
+      <div class="panel profile-panel">
+        <form id="pf-form" novalidate>
+          <div class="field">
+            <label>Sex</label>
+            <div class="seg-choice">
+              <label class="seg-option">
+                <input type="radio" name="pf-sex" value="male" checked />
+                <span>Male</span>
+              </label>
+              <label class="seg-option">
+                <input type="radio" name="pf-sex" value="female" />
+                <span>Female</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="pf-age">Age (years)</label>
+              <input type="number" id="pf-age" min="15" max="100" step="1" placeholder="e.g. 28" inputmode="numeric" />
+            </div>
+            <div class="field">
+              <label for="pf-weight">Weight (kg)</label>
+              <input type="number" id="pf-weight" min="20" max="400" step="0.1" placeholder="e.g. 78.5" inputmode="decimal" />
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="pf-height">Height (inches)</label>
+              <input type="number" id="pf-height" min="36" max="96" step="0.1" placeholder="e.g. 69 — that's 5'9&quot;" inputmode="decimal" />
+            </div>
+            <div class="field">
+              <label for="pf-goal-weight">Target weight (kg) <span class="opt">for Timeline</span></label>
+              <input type="number" id="pf-goal-weight" min="20" max="400" step="0.1" placeholder="e.g. 72" inputmode="decimal" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="pf-activity">Activity level</label>
+            <select id="pf-activity">
+              <option value="1.2">Sedentary — desk job, little or no exercise</option>
+              <option value="1.375">Light — training 1–3 days/week</option>
+              <option value="1.55" selected>Moderate — training 3–5 days/week</option>
+              <option value="1.725">Very active — training 6–7 days/week</option>
+              <option value="1.9">Athlete — twice-daily training or physical job</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Goal</label>
+            <div class="seg-choice">
+              <label class="seg-option">
+                <input type="radio" name="pf-goal" value="cut" />
+                <span>Cut</span>
+              </label>
+              <label class="seg-option">
+                <input type="radio" name="pf-goal" value="maintain" checked />
+                <span>Maintain</span>
+              </label>
+              <label class="seg-option">
+                <input type="radio" name="pf-goal" value="bulk" />
+                <span>Lean bulk</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="pf-climate">Climate <span class="opt">for Water intake</span></label>
+            <select id="pf-climate">
+              <option value="0" selected>Temperate</option>
+              <option value="500">Hot / humid — adds 500 ml</option>
+              <option value="750">Hot &amp; dry or high altitude — adds 750 ml</option>
+            </select>
+          </div>
+
+          <p class="hint">Your activity level also sets training minutes/day for the Water calculator (Sedentary 0 · Light 30 · Moderate 45 · Very active 60 · Athlete 90). Goal targets: Cut = TDEE − 500 kcal, Lean bulk = TDEE + 250 kcal.</p>
+          <button type="submit" class="btn-primary">Save profile</button>
+          <div class="error-msg" id="pf-error" hidden></div>
+          <div class="ok-msg" id="pf-note" hidden></div>
+        </form>
       </div>
     </section>
 
     <!-- BMI -->
     <section class="route" id="route-bmi" data-route="bmi" hidden>
       <h1 class="page-title">BMI Calculator</h1>
-      <p class="page-subtitle">Body Mass Index — weight relative to height. Units: weight in <strong>kg</strong>, height in <strong>inches</strong>.</p>
+      <p class="page-subtitle">Body Mass Index — from your profile's weight (kg) and height (inches).</p>
 
       <div class="calc-layout">
-        <!-- Form -->
         <div class="panel">
-          <form id="bmi-form" novalidate>
-            <div class="field">
-              <label for="bmi-weight">Weight (kg)</label>
-              <input type="number" id="bmi-weight" min="20" max="400" step="0.1" placeholder="e.g. 78.5" inputmode="decimal" />
-            </div>
-            <div class="field">
-              <label for="bmi-height">Height (inches)</label>
-              <input type="number" id="bmi-height" min="36" max="96" step="0.1" placeholder="e.g. 69" inputmode="decimal" />
-            </div>
-            <p class="hint">Think in feet? Total inches = (ft × 12) + in — e.g. 5'9&quot; = 69&quot;.</p>
-            <button type="submit" class="btn-primary">Calculate BMI</button>
-            <div class="error-msg" id="bmi-error" hidden></div>
-          </form>
+          <h3 class="results-heading">From your profile</h3>
+          <div id="bmi-summary" class="summary-list"></div>
+          <a class="btn-secondary" href="#/profile">Edit profile</a>
         </div>
 
-        <!-- Results -->
         <div class="panel">
           <div class="result-empty" id="bmi-empty">
-            <p>Enter your weight and height, then hit <strong>Calculate BMI</strong> to see your score, category and healthy weight range.</p>
+            <p>Set up your <a href="#/profile">profile</a> once — your BMI appears here automatically.</p>
           </div>
 
           <div id="bmi-output" hidden>
@@ -149,63 +229,18 @@
     <!-- BMR & TDEE -->
     <section class="route" id="route-bmr" data-route="bmr" hidden>
       <h1 class="page-title">BMR &amp; TDEE</h1>
-      <p class="page-subtitle">Mifflin-St Jeor equation. Units: weight in <strong>kg</strong>, height in <strong>inches</strong>.</p>
+      <p class="page-subtitle">Mifflin-St Jeor — from your profile. Your goal's target row is highlighted.</p>
 
       <div class="calc-layout">
-        <!-- Form -->
         <div class="panel">
-          <form id="bmr-form" novalidate>
-            <div class="field">
-              <label>Sex</label>
-              <div class="seg-choice">
-                <label class="seg-option">
-                  <input type="radio" name="bmr-sex" value="male" checked />
-                  <span>Male</span>
-                </label>
-                <label class="seg-option">
-                  <input type="radio" name="bmr-sex" value="female" />
-                  <span>Female</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="field-row">
-              <div class="field">
-                <label for="bmr-age">Age (years)</label>
-                <input type="number" id="bmr-age" min="15" max="100" step="1" placeholder="e.g. 28" inputmode="numeric" />
-              </div>
-              <div class="field">
-                <label for="bmr-weight">Weight (kg)</label>
-                <input type="number" id="bmr-weight" min="20" max="400" step="0.1" placeholder="e.g. 78.5" inputmode="decimal" />
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="bmr-height">Height (inches)</label>
-              <input type="number" id="bmr-height" min="36" max="96" step="0.1" placeholder="e.g. 69" inputmode="decimal" />
-            </div>
-
-            <div class="field">
-              <label for="bmr-activity">Activity level</label>
-              <select id="bmr-activity">
-                <option value="1.2">Sedentary — desk job, little or no exercise</option>
-                <option value="1.375">Light — training 1–3 days/week</option>
-                <option value="1.55" selected>Moderate — training 3–5 days/week</option>
-                <option value="1.725">Very active — training 6–7 days/week</option>
-                <option value="1.9">Athlete — twice-daily training or physical job</option>
-              </select>
-            </div>
-
-            <p class="hint">Think in feet? Total inches = (ft × 12) + in — e.g. 5'9&quot; = 69&quot;.</p>
-            <button type="submit" class="btn-primary">Calculate Calories</button>
-            <div class="error-msg" id="bmr-error" hidden></div>
-          </form>
+          <h3 class="results-heading">From your profile</h3>
+          <div id="bmr-summary" class="summary-list"></div>
+          <a class="btn-secondary" href="#/profile">Edit profile</a>
         </div>
 
-        <!-- Results -->
         <div class="panel">
           <div class="result-empty" id="bmr-empty">
-            <p>Fill in the form to see your <strong>BMR</strong>, daily <strong>maintenance calories (TDEE)</strong>, and calorie targets for cutting or bulking.</p>
+            <p>Set up your <a href="#/profile">profile</a> once — your BMR, TDEE and calorie targets appear here automatically.</p>
           </div>
 
           <div id="bmr-output" hidden>
@@ -226,11 +261,10 @@
             <h3 class="results-heading">Targets by goal</h3>
             <table class="goal-table">
               <thead>
-                <tr><th>Goal</th><th class="num">Calories</th><th class="num rate-col">Est. change</th><th class="num">Send</th></tr>
+                <tr><th>Goal</th><th class="num">Calories</th><th class="num rate-col">Est. change</th></tr>
               </thead>
               <tbody id="bmr-goals"></tbody>
             </table>
-            <p class="hint table-hint">Tap <strong>→</strong> to send any target to the Macro Split calculator — your weight carries over too.</p>
 
             <div class="warn-note" id="bmr-warn" hidden></div>
 
@@ -243,51 +277,18 @@
     <!-- Macros -->
     <section class="route" id="route-macros" data-route="macros" hidden>
       <h1 class="page-title">Macro Split</h1>
-      <p class="page-subtitle">Turn a daily calorie target into protein, carbs and fat — in <strong>grams</strong>. Weight in <strong>kg</strong>.</p>
+      <p class="page-subtitle">Protein / carbs / fat for your goal's calorie target — computed from your profile automatically.</p>
 
       <div class="calc-layout">
-        <!-- Form -->
         <div class="panel">
-          <form id="macro-form" novalidate>
-            <div class="field">
-              <label>Goal</label>
-              <div class="seg-choice">
-                <label class="seg-option">
-                  <input type="radio" name="macro-goal" value="cut" />
-                  <span>Cut</span>
-                </label>
-                <label class="seg-option">
-                  <input type="radio" name="macro-goal" value="maintain" checked />
-                  <span>Maintain</span>
-                </label>
-                <label class="seg-option">
-                  <input type="radio" name="macro-goal" value="bulk" />
-                  <span>Lean bulk</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="field-row">
-              <div class="field">
-                <label for="macro-calories">Daily calories (kcal)</label>
-                <input type="number" id="macro-calories" min="500" max="12000" step="10" placeholder="e.g. 2200" inputmode="numeric" />
-              </div>
-              <div class="field">
-                <label for="macro-weight">Weight (kg)</label>
-                <input type="number" id="macro-weight" min="20" max="400" step="0.1" placeholder="e.g. 78.5" inputmode="decimal" />
-              </div>
-            </div>
-
-            <p class="hint">Get your calorie number from the <a href="#/bmr">BMR &amp; TDEE</a> tab — e.g. your "moderate cut" or "lean bulk" target.</p>
-            <button type="submit" class="btn-primary">Calculate Macros</button>
-            <div class="error-msg" id="macro-error" hidden></div>
-          </form>
+          <h3 class="results-heading">From your profile</h3>
+          <div id="macros-summary" class="summary-list"></div>
+          <a class="btn-secondary" href="#/profile">Edit profile</a>
         </div>
 
-        <!-- Results -->
         <div class="panel">
           <div class="result-empty" id="macro-empty">
-            <p>Enter your daily calorie target and weight to get <strong>protein / carbs / fat</strong> grams tuned to your goal.</p>
+            <p>Set up your <a href="#/profile">profile</a> once — your macros appear here automatically.</p>
           </div>
 
           <div id="macro-output" hidden>
@@ -344,41 +345,18 @@
     <!-- Water -->
     <section class="route" id="route-water" data-route="water" hidden>
       <h1 class="page-title">Water Intake</h1>
-      <p class="page-subtitle">Daily hydration target from your weight and training — in <strong>litres</strong>. Weight in <strong>kg</strong>.</p>
+      <p class="page-subtitle">Daily hydration target in litres — training minutes come from your activity level.</p>
 
       <div class="calc-layout">
-        <!-- Form -->
         <div class="panel">
-          <form id="water-form" novalidate>
-            <div class="field">
-              <label for="water-weight">Weight (kg)</label>
-              <input type="number" id="water-weight" min="20" max="400" step="0.1" placeholder="e.g. 78.5" inputmode="decimal" />
-            </div>
-
-            <div class="field">
-              <label for="water-workout">Training per day (minutes) <span class="opt">optional</span></label>
-              <input type="number" id="water-workout" min="0" max="300" step="5" placeholder="e.g. 60" inputmode="numeric" />
-            </div>
-
-            <div class="field">
-              <label for="water-climate">Climate</label>
-              <select id="water-climate">
-                <option value="0" selected>Temperate</option>
-                <option value="500">Hot / humid — adds 500 ml</option>
-                <option value="750">Hot &amp; dry or high altitude — adds 750 ml</option>
-              </select>
-            </div>
-
-            <p class="hint">Base rule: ~33 ml per kg of body weight. Training adds ~12 ml per minute (≈ 350 ml per 30-min session).</p>
-            <button type="submit" class="btn-primary">Calculate Water Target</button>
-            <div class="error-msg" id="water-error" hidden></div>
-          </form>
+          <h3 class="results-heading">From your profile</h3>
+          <div id="water-summary" class="summary-list"></div>
+          <a class="btn-secondary" href="#/profile">Edit profile</a>
         </div>
 
-        <!-- Results -->
         <div class="panel">
           <div class="result-empty" id="water-empty">
-            <p>Enter your weight to get your <strong>daily water target</strong> — in litres, glasses (250 ml) and bottles (500 ml).</p>
+            <p>Set up your <a href="#/profile">profile</a> once — your water target appears here automatically.</p>
           </div>
 
           <div id="water-output" hidden>
@@ -416,52 +394,18 @@
     <!-- Steps -->
     <section class="route" id="route-steps" data-route="steps" hidden>
       <h1 class="page-title">Daily Steps</h1>
-      <p class="page-subtitle">How many steps to walk every day for your age — with distance from your height (inches) and calories from your weight (kg).</p>
+      <p class="page-subtitle">Your step target — Cut goal switches it to weight-loss mode (+2,000 steps).</p>
 
       <div class="calc-layout">
-        <!-- Form -->
         <div class="panel">
-          <form id="steps-form" novalidate>
-            <div class="field">
-              <label>Goal</label>
-              <div class="seg-choice">
-                <label class="seg-option">
-                  <input type="radio" name="steps-goal" value="health" checked />
-                  <span>General health</span>
-                </label>
-                <label class="seg-option">
-                  <input type="radio" name="steps-goal" value="weightloss" />
-                  <span>Weight loss</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="field-row">
-              <div class="field">
-                <label for="steps-age">Age (years)</label>
-                <input type="number" id="steps-age" min="10" max="100" step="1" placeholder="e.g. 28" inputmode="numeric" />
-              </div>
-              <div class="field">
-                <label for="steps-weight">Weight (kg)</label>
-                <input type="number" id="steps-weight" min="20" max="400" step="0.1" placeholder="e.g. 78.5" inputmode="decimal" />
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="steps-height">Height (inches)</label>
-              <input type="number" id="steps-height" min="36" max="96" step="0.1" placeholder="e.g. 69" inputmode="decimal" />
-            </div>
-
-            <p class="hint">Targets follow large cohort studies: benefits start around 4,400 steps/day; risk reduction plateaus at ~8,000–10,000 steps for under-60s and ~6,000–8,000 for 60+.</p>
-            <button type="submit" class="btn-primary">Calculate Steps</button>
-            <div class="error-msg" id="steps-error" hidden></div>
-          </form>
+          <h3 class="results-heading">From your profile</h3>
+          <div id="steps-summary" class="summary-list"></div>
+          <a class="btn-secondary" href="#/profile">Edit profile</a>
         </div>
 
-        <!-- Results -->
         <div class="panel">
           <div class="result-empty" id="steps-empty">
-            <p>Enter your age, weight and height to get your <strong>daily step target</strong>, the distance it covers and the calories it burns.</p>
+            <p>Set up your <a href="#/profile">profile</a> once — your step target appears here automatically.</p>
           </div>
 
           <div id="steps-output" hidden>
@@ -511,43 +455,18 @@
     <!-- Timeline -->
     <section class="route" id="route-timeline" data-route="timeline" hidden>
       <h1 class="page-title">Goal Weight Timeline</h1>
-      <p class="page-subtitle">When will you reach your goal weight? Weights in <strong>kg</strong>, calories in <strong>kcal</strong>.</p>
+      <p class="page-subtitle">When you'll reach your target weight on your goal's calorie plan — all from your profile.</p>
 
       <div class="calc-layout">
-        <!-- Form -->
         <div class="panel">
-          <form id="tl-form" novalidate>
-            <div class="field-row">
-              <div class="field">
-                <label for="tl-current">Current weight (kg)</label>
-                <input type="number" id="tl-current" min="20" max="400" step="0.1" placeholder="e.g. 78.5" inputmode="decimal" />
-              </div>
-              <div class="field">
-                <label for="tl-goal">Goal weight (kg)</label>
-                <input type="number" id="tl-goal" min="20" max="400" step="0.1" placeholder="e.g. 72" inputmode="decimal" />
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="tl-maint">Maintenance calories (kcal/day)</label>
-              <input type="number" id="tl-maint" min="500" max="12000" step="10" placeholder="e.g. 2705" inputmode="numeric" />
-            </div>
-
-            <div class="field">
-              <label for="tl-intake">Planned intake (kcal/day)</label>
-              <input type="number" id="tl-intake" min="500" max="12000" step="10" placeholder="e.g. 2205" inputmode="numeric" />
-            </div>
-
-            <p class="hint">Grab both calorie numbers from the <a href="#/bmr">BMR &amp; TDEE</a> tab — maintenance = your TDEE, intake = one of your cut/bulk targets. Assumes 1 kg ≈ 7,700 kcal.</p>
-            <button type="submit" class="btn-primary">Calculate Timeline</button>
-            <div class="error-msg" id="tl-error" hidden></div>
-          </form>
+          <h3 class="results-heading">From your profile</h3>
+          <div id="tl-summary" class="summary-list"></div>
+          <a class="btn-secondary" href="#/profile">Edit profile</a>
         </div>
 
-        <!-- Results -->
         <div class="panel">
           <div class="result-empty" id="tl-empty">
-            <p>Enter your weights and calorie plan to see <strong>how long the journey takes</strong> — with weekly rate, milestone dates and safe-pace checks.</p>
+            <p>Set up your <a href="#/profile">profile</a> once — your timeline appears here automatically.</p>
           </div>
 
           <div id="tl-output" hidden>
@@ -608,12 +527,13 @@
     </div>
   </footer>
 
-  <script src="js/app.js?v=6"></script>
-  <script src="js/bmi.js?v=6"></script>
-  <script src="js/bmr.js?v=6"></script>
-  <script src="js/macros.js?v=6"></script>
-  <script src="js/water.js?v=6"></script>
-  <script src="js/steps.js?v=6"></script>
-  <script src="js/timeline.js?v=6"></script>
+  <script src="js/app.js?v=7"></script>
+  <script src="js/profile.js?v=7"></script>
+  <script src="js/bmi.js?v=7"></script>
+  <script src="js/bmr.js?v=7"></script>
+  <script src="js/macros.js?v=7"></script>
+  <script src="js/water.js?v=7"></script>
+  <script src="js/steps.js?v=7"></script>
+  <script src="js/timeline.js?v=7"></script>
 </body>
 </html>

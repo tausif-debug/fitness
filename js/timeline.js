@@ -1,10 +1,8 @@
 /* ============================================================
-   FitCalc — Goal Weight Timeline
-   Units: weight in kg, energy in kcal (fixed, per spec).
-
-   weeklyRate (kg/wk) = |intake − maintenance| × 7 ÷ 7,700
-   weeks              = |goal − current| ÷ weeklyRate
-   Safe pace: cut ≤ 1% of bodyweight/week · bulk ≤ 0.5%/week
+   FitCalc — Goal Weight Timeline (renders from the shared profile)
+   current/target weight from profile; maintenance = TDEE;
+   intake = the profile goal's calorie target.
+   weeklyRate = |intake − maintenance| × 7 ÷ 7,700
    ============================================================ */
 
 (function () {
@@ -12,11 +10,8 @@
 
   var KCAL_PER_KG = 7700;
   var WEEKS_PER_MONTH = 4.348;
-  var SAFE_CUT_PCT = 0.01;   // 1% of current bodyweight per week
-  var SAFE_BULK_PCT = 0.005; // 0.5% per week
-
-  var WEIGHT_MIN = 20, WEIGHT_MAX = 400;
-  var CAL_MIN = 500, CAL_MAX = 12000;
+  var SAFE_CUT_PCT = 0.01;
+  var SAFE_BULK_PCT = 0.005;
 
   var MILESTONES = [0.25, 0.5, 0.75, 1];
 
@@ -32,6 +27,10 @@
     return n.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   }
 
+  function fmt0(n) {
+    return Math.round(n).toLocaleString("en-US");
+  }
+
   function fmtDate(d) {
     return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
   }
@@ -40,16 +39,19 @@
     return new Date(Date.now() + days * 86400000);
   }
 
-  function showError(msg) {
-    var err = $("tl-error");
-    err.textContent = msg;
-    err.hidden = false;
+  /* Show a message in the empty-state panel instead of results */
+  function showMessage(html) {
+    var empty = $("tl-empty");
+    empty.innerHTML = "<p>" + html + "</p>";
+    empty.hidden = false;
     $("tl-output").hidden = true;
-    $("tl-empty").hidden = false;
   }
 
-  function clearError() {
-    $("tl-error").hidden = true;
+  function showDefaultEmpty() {
+    $("tl-empty").innerHTML =
+      '<p>Set up your <a href="#/profile">profile</a> once — your timeline appears here automatically.</p>';
+    $("tl-empty").hidden = false;
+    $("tl-output").hidden = true;
   }
 
   function renderMilestones(currentKg, deltaKg, totalDays) {
@@ -61,7 +63,8 @@
       if (p === 1) tr.className = "is-maint";
 
       var tdP = document.createElement("td");
-      tdP.innerHTML = '<span class="goal-name">' + Math.round(p * 100) + "%</span>" +
+      tdP.innerHTML =
+        '<span class="goal-name">' + Math.round(p * 100) + "%</span>" +
         (p === 1 ? '<span class="goal-note">goal reached 🎉</span>' : "");
 
       var tdW = document.createElement("td");
@@ -79,11 +82,35 @@
     });
   }
 
-  function render(currentKg, goalKg, maintKcal, intakeKcal) {
+  function render() {
+    var p = window.FitCalc && FitCalc.profile.get();
+    if (!p) {
+      showDefaultEmpty();
+      return;
+    }
+
+    var maint = FitCalc.calc.tdee(p);
+    var intake = FitCalc.calc.targetKcal(p);
+
+    if (p.goalWeightKg == null) {
+      showMessage(
+        'Add a <strong>target weight</strong> in your <a href="#/profile">profile</a> to see your timeline.'
+      );
+      return;
+    }
+
+    var currentKg = p.weightKg;
+    var goalKg = p.goalWeightKg;
     var deltaKg = goalKg - currentKg;
+    var dailyDelta = intake - maint; // negative = deficit
+    var cutting = deltaKg < 0;
 
     // Already at goal
     if (Math.abs(deltaKg) < 0.05) {
+      FitCalc.ui.summary("tl-summary", [
+        ["Current weight", fmtKg(currentKg) + " kg"],
+        ["Target weight", fmtKg(goalKg) + " kg"],
+      ]);
       $("tl-empty").hidden = true;
       $("tl-output").hidden = false;
       $("tl-weeks").textContent = "0";
@@ -98,38 +125,42 @@
       return;
     }
 
-    var dailyDelta = intakeKcal - maintKcal; // negative = deficit
-    var cutting = deltaKg < 0;
-
-    // Direction checks
+    // Goal direction vs calorie plan
     if (Math.abs(dailyDelta) < 10) {
-      showError(
-        "Intake equals maintenance — your weight will stay at " + fmtKg(currentKg) +
-        " kg. Eat below maintenance to lose, or above it to gain."
+      showMessage(
+        "Your goal is <strong>Maintain</strong> — your weight stays at " + fmtKg(currentKg) +
+        ' kg. Switch your profile goal to <strong>Cut</strong> or <strong>Lean bulk</strong> to see a timeline.'
       );
       return;
     }
     if (cutting && dailyDelta > 0) {
-      showError(
-        "At " + Math.round(intakeKcal) + " kcal/day you would GAIN weight, but your goal (" +
-        fmtKg(goalKg) + " kg) is below your current " + fmtKg(currentKg) +
-        " kg. Pick an intake below your maintenance (" + Math.round(maintKcal) + " kcal)."
+      showMessage(
+        "Your goal is <strong>" + FitCalc.labels.goal[p.goal] + "</strong> but your target weight (" +
+        fmtKg(goalKg) + " kg) is <em>above</em> your current " + fmtKg(currentKg) +
+        ' kg. Adjust the goal or target weight in your <a href="#/profile">profile</a>.'
       );
       return;
     }
     if (!cutting && dailyDelta < 0) {
-      showError(
-        "At " + Math.round(intakeKcal) + " kcal/day you would LOSE weight, but your goal (" +
-        fmtKg(goalKg) + " kg) is above your current " + fmtKg(currentKg) +
-        " kg. Pick an intake above your maintenance (" + Math.round(maintKcal) + " kcal)."
+      showMessage(
+        "Your goal is <strong>" + FitCalc.labels.goal[p.goal] + "</strong> but your target weight (" +
+        fmtKg(goalKg) + " kg) is <em>below</em> your current " + fmtKg(currentKg) +
+        ' kg. Adjust the goal or target weight in your <a href="#/profile">profile</a>.'
       );
       return;
     }
 
-    var weeklyRate = (Math.abs(dailyDelta) * 7) / KCAL_PER_KG; // kg/week toward goal
+    var weeklyRate = (Math.abs(dailyDelta) * 7) / KCAL_PER_KG;
     var weeks = Math.abs(deltaKg) / weeklyRate;
     var totalDays = weeks * 7;
     var months = weeks / WEEKS_PER_MONTH;
+
+    FitCalc.ui.summary("tl-summary", [
+      ["Current weight", fmtKg(currentKg) + " kg"],
+      ["Target weight", fmtKg(goalKg) + " kg"],
+      ["Maintenance (TDEE)", fmt0(maint) + " kcal"],
+      ["Planned intake", fmt0(intake) + " kcal (" + FitCalc.labels.goal[p.goal] + ")"],
+    ]);
 
     $("tl-empty").hidden = true;
     $("tl-output").hidden = false;
@@ -145,8 +176,7 @@
     $("tl-total").textContent = sign + fmtKg(Math.abs(deltaKg)) + " kg (" + (cutting ? "lose" : "gain") + ")";
     $("tl-rate").textContent = sign + weeklyRate.toFixed(2) + " kg/week";
     $("tl-balance").textContent =
-      Math.round(Math.abs(dailyDelta)).toLocaleString("en-US") + " kcal/day " +
-      (cutting ? "deficit" : "surplus");
+      fmt0(Math.abs(dailyDelta)) + " kcal/day " + (cutting ? "deficit" : "surplus");
 
     renderMilestones(currentKg, deltaKg, totalDays);
 
@@ -158,18 +188,15 @@
 
     if (weeklyRate > maxSafeRate) {
       var safeWeeks = Math.abs(deltaKg) / maxSafeRate;
-      var suggestedKcal = cutting
-        ? maintKcal - (maxSafeRate * KCAL_PER_KG) / 7
-        : maintKcal + (maxSafeRate * KCAL_PER_KG) / 7;
       warnings.push(
         "This pace (" + weeklyRate.toFixed(2) + " kg/wk) exceeds the recommended max of ~" +
-        maxSafeRate.toFixed(2) + " kg/wk (" + (safePct * 100) + "% of bodyweight). Safer plan: ~" +
-        Math.round(suggestedKcal) + " kcal/day → about " +
+        maxSafeRate.toFixed(2) + " kg/wk (" + (safePct * 100) + "% of bodyweight). Consider a smaller daily " +
+        (cutting ? "deficit" : "surplus") + " — a safer plan takes about " +
         (safeWeeks >= 10 ? Math.round(safeWeeks) : fmt1(safeWeeks)) + " weeks."
       );
     }
     if (weeks > 260) {
-      warnings.push("That's over 5 years at this pace — consider a larger daily change or a nearer interim goal.");
+      warnings.push("That's over 5 years at this pace — consider a nearer interim target weight.");
     }
 
     if (warnings.length) {
@@ -180,49 +207,8 @@
     }
   }
 
-  function readForm() {
-    var current = parseFloat($("tl-current").value);
-    var goal = parseFloat($("tl-goal").value);
-    var maint = parseFloat($("tl-maint").value);
-    var intake = parseFloat($("tl-intake").value);
-
-    if (isNaN(current) || isNaN(goal) || isNaN(maint) || isNaN(intake)) {
-      return { error: "Please fill in all four fields (weights in kg, calories in kcal)." };
-    }
-    if (current < WEIGHT_MIN || current > WEIGHT_MAX || goal < WEIGHT_MIN || goal > WEIGHT_MAX) {
-      return { error: "Weights must be between " + WEIGHT_MIN + " and " + WEIGHT_MAX + " kg." };
-    }
-    if (maint < CAL_MIN || maint > CAL_MAX || intake < CAL_MIN || intake > CAL_MAX) {
-      return { error: "Calorie values must be between " + CAL_MIN + " and " + CAL_MAX + " kcal." };
-    }
-    return { current: current, goal: goal, maint: maint, intake: intake };
-  }
-
-  function apply() {
-    var v = readForm();
-    if (v.error) {
-      showError(v.error);
-      return;
-    }
-    clearError();
-    render(v.current, v.goal, v.maint, v.intake);
-  }
-
-  function onSubmit(e) {
-    e.preventDefault();
-    apply();
-  }
-
   document.addEventListener("DOMContentLoaded", function () {
-    $("tl-form").addEventListener("submit", onSubmit);
-
-    // Live recalculation once a result is showing
-    function liveUpdate() {
-      if ($("tl-output").hidden) return;
-      apply();
-    }
-
-    $("tl-form").addEventListener("input", liveUpdate);
-    $("tl-form").addEventListener("change", liveUpdate);
+    FitCalc.profile.onChange(render);
+    render();
   });
 })();

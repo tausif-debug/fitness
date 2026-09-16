@@ -17,7 +17,7 @@ All calculations use fixed units: **weight in kg, height in inches**.
 | **Daily Steps** | Research-based daily step target by age and goal (health / weight loss), with distance from height-derived stride and calories from weight |
 | **Goal Weight Timeline** | Weeks and target date to reach a goal weight from maintenance vs planned intake — weekly rate, milestone dates, direction checks and safe-pace warnings |
 
-**Cross-calculator flow:** every calorie target in the BMR & TDEE results has a **→ send button** that pre-fills the Macro Split calculator (goal, calories, and weight all carry over).
+**One profile, six calculators:** the user enters their stats once (sex, age, weight, height, activity level, goal, target weight, climate) in the **Profile** tab — saved to localStorage — and every calculator renders from that shared state automatically. Changing the profile live-updates all results. Derived links: activity level → training minutes for Water; goal + TDEE → macro calories and Timeline intake; goal → Steps mode.
 
 ## Run locally
 
@@ -44,6 +44,7 @@ fitness-calculator/
 │   └── style.css     # dark sporty design system (volt accent, cards, gauges, tables)
 └── js/
     ├── app.js        # shell: hash-based tab routing
+    ├── profile.js    # shared profile store (localStorage) + derived calc helpers
     ├── bmi.js        # BMI (kg + inches)
     ├── bmr.js        # BMR & TDEE (Mifflin-St Jeor)
     ├── macros.js     # Macro split + prefill API for the send flow

@@ -1,23 +1,16 @@
 /* ============================================================
-   FitCalc — Daily Steps Calculator
-   Units: weight in kg, height in inches (fixed, per spec).
-
-   Step targets (cohort meta-analyses, e.g. Paluch et al. 2021):
-     health:     <60y → 10,000 (range 8,000–10,000)
-                 60+y →  8,000 (range 6,000–8,000)
-     weightloss: health target + 2,000
-   Stride (m)   = height(cm) × 0.414 / 100
-   Distance     = steps × stride
-   Calories     = MET 3.5 × kg × hours, at ~4.8 km/h moderate pace
+   FitCalc — Daily Steps (renders from the shared profile)
+   Targets: health 10k (<60) / 8k (60+); weight loss +2k.
+   Profile goal "cut" maps to the weight-loss mode.
+   Stride = 0.414 × height · kcal = MET 3.5 × kg × h @ 4.8 km/h
    ============================================================ */
 
 (function () {
   "use strict";
 
-  var IN_TO_CM = 2.54;
-  var STRIDE_FACTOR = 0.414; // stride length ≈ 0.414 × height
-  var WALK_KMH = 4.8;        // moderate walking pace
-  var WALK_MET = 3.5;        // MET value for moderate walking
+  var STRIDE_FACTOR = 0.414;
+  var WALK_KMH = 4.8;
+  var WALK_MET = 3.5;
 
   var TARGETS = {
     health: {
@@ -32,12 +25,6 @@
 
   var GAUGE_MAX = 15000;
 
-  var LIMITS = {
-    age:    { min: 10, max: 100 },
-    weight: { min: 20, max: 400 },
-    height: { min: 36, max: 96 },
-  };
-
   function $(id) {
     return document.getElementById(id);
   }
@@ -46,22 +33,37 @@
     return Math.round(n).toLocaleString("en-US");
   }
 
-  function render(goal, age, weightKg, heightIn) {
-    var t = TARGETS[goal][age >= 60 ? "over60" : "under60"];
+  function render() {
+    var p = window.FitCalc && FitCalc.profile.get();
+    if (!p) {
+      $("steps-empty").hidden = false;
+      $("steps-output").hidden = true;
+      return;
+    }
 
-    var heightCm = heightIn * IN_TO_CM;
+    var mode = FitCalc.calc.stepsGoal(p); // "health" | "weightloss"
+    var t = TARGETS[mode][p.age >= 60 ? "over60" : "under60"];
+
+    var heightCm = FitCalc.calc.heightCm(p);
     var strideM = (heightCm * STRIDE_FACTOR) / 100;
     var distKm = (t.target * strideM) / 1000;
     var hours = distKm / WALK_KMH;
-    var kcal = WALK_MET * weightKg * hours;
+    var kcal = WALK_MET * p.weightKg * hours;
+
+    FitCalc.ui.summary("steps-summary", [
+      ["Age", p.age + " years"],
+      ["Weight", p.weightKg + " kg"],
+      ["Height", p.heightIn + " in"],
+      ["Mode", mode === "weightloss" ? "Weight loss (goal: cut)" : "General health"],
+    ]);
 
     $("steps-empty").hidden = true;
     $("steps-output").hidden = false;
 
     $("steps-target").textContent = fmtInt(t.target);
     $("steps-target-label").textContent =
-      (goal === "weightloss" ? "Daily step target — weight loss" : "Daily step target — general health") +
-      (age >= 60 ? " (age 60+)" : "");
+      (mode === "weightloss" ? "Daily step target — weight loss" : "Daily step target — general health") +
+      (p.age >= 60 ? " (age 60+)" : "");
 
     $("steps-range").textContent = fmtInt(t.lo) + " – " + fmtInt(t.hi) + " steps/day";
     $("steps-distance").textContent = "≈ " + distKm.toFixed(1) + " km/day";
@@ -73,66 +75,8 @@
     $("steps-marker").style.left = pct + "%";
   }
 
-  function showError(msg) {
-    var err = $("steps-error");
-    err.textContent = msg;
-    err.hidden = false;
-    $("steps-output").hidden = true;
-    $("steps-empty").hidden = false;
-  }
-
-  function clearError() {
-    $("steps-error").hidden = true;
-  }
-
-  function readForm() {
-    var goalEl = document.querySelector('input[name="steps-goal"]:checked');
-    var goal = goalEl ? goalEl.value : "health";
-
-    var age = parseFloat($("steps-age").value);
-    var weight = parseFloat($("steps-weight").value);
-    var height = parseFloat($("steps-height").value);
-
-    if (isNaN(age) || isNaN(weight) || isNaN(height)) {
-      return { error: "Please fill in age, weight (kg) and height (inches)." };
-    }
-    if (age < LIMITS.age.min || age > LIMITS.age.max) {
-      return { error: "Age must be between " + LIMITS.age.min + " and " + LIMITS.age.max + " years." };
-    }
-    if (weight < LIMITS.weight.min || weight > LIMITS.weight.max) {
-      return { error: "Weight must be between " + LIMITS.weight.min + " and " + LIMITS.weight.max + " kg." };
-    }
-    if (height < LIMITS.height.min || height > LIMITS.height.max) {
-      return { error: "Height must be between " + LIMITS.height.min + " and " + LIMITS.height.max + " inches (3–8 ft)." };
-    }
-    return { goal: goal, age: age, weight: weight, height: height };
-  }
-
-  function onSubmit(e) {
-    e.preventDefault();
-    clearError();
-    var v = readForm();
-    if (v.error) {
-      showError(v.error);
-      return;
-    }
-    render(v.goal, v.age, v.weight, v.height);
-  }
-
   document.addEventListener("DOMContentLoaded", function () {
-    $("steps-form").addEventListener("submit", onSubmit);
-
-    // Live recalculation once a result is showing
-    function liveUpdate() {
-      if ($("steps-output").hidden) return;
-      var v = readForm();
-      if (!v.error) {
-        clearError();
-        render(v.goal, v.age, v.weight, v.height);
-      }
-    }
-
-    $("steps-form").addEventListener("input", liveUpdate);
-    $("steps-form").addEventListener("change", liveUpdate);
+    FitCalc.profile.onChange(render);
+    render();
   });
 })();
