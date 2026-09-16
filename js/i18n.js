@@ -358,6 +358,7 @@
       "7 ناشتے · 7 دوپہر · 7 راتیں — ایک ہی دن کوئی ڈش نہیں دہرائی جاتی"],
     "diet.qtyTimes": ["× {q}", "× {q}"],
     "diet.qtyGrams": ["{g} g", "{g} گرام"],
+    "diet.ringLabel": ["of daily target", "روزانہ ہدف کا تناسب"],
     "diet.disclaimer": ["Estimates assume home-style Pakistani cooking with moderate oil/ghee — restaurant and street-food portions can be 1.5–2× larger. Swap freely within a category (daal ↔ daal, sabzi ↔ sabzi, roti ↔ rice at 1 roti ≈ 75 g rice). Not medical advice — consult a dietitian for clinical conditions.",
       "اندازے گھریلو پاکستانی کھانے (معتدل تیل/گھی) فرض کرتے ہیں — ہوٹل اور اسٹریٹ فوڈ کی پلیٹیں 1.5–2 گنا بڑی ہو سکتی ہیں۔ ایک ہی قسم میں آزادانہ تبدیلی کریں (دال ↔ دال، سبزی ↔ سبزی، روٹی ↔ چاول: 1 روٹی ≈ 75 گرام چاول)۔ طبی مشورہ نہیں — مرض کی صورت میں ماہرِ غذائیت سے رجوع کریں۔"],
   };

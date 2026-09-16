@@ -233,13 +233,16 @@
     ]);
   }
 
+  var SLOT_EMOJI = { breakfast: "🍳", lunch: "🍛", dinner: "🌙", snacks: "🥜" };
+
   function mealCardHTML(m) {
     var rows = m.items.map(function (it) {
       var qt = it.qtyText ? ' <span class="fq">' + it.qtyText + "</span>" : "";
       return '<div class="food-line"><span>' + foodName(it.key) + qt +
         '</span><span class="fk">' + fmt0(it.k) + " kcal</span></div>";
     }).join("");
-    return '<div class="meal-card"><div class="meal-head"><span>' + t("slot." + m.slot) +
+    return '<div class="meal-card"><div class="meal-head"><span><span class="meal-emoji">' +
+      (SLOT_EMOJI[m.slot] || "") + "</span>" + t("slot." + m.slot) +
       '</span><span class="mk">' + fmt0(m.totals.k) + " kcal</span></div>" + rows + "</div>";
   }
 
@@ -250,9 +253,21 @@
     var matchPct = Math.round((tot.k / target) * 100);
     var barPct = Math.min(100, (tot.k / (target * 1.15)) * 100);
 
+    var R = 26, CIRC = 2 * Math.PI * R;
+    var clamped = Math.max(0, Math.min(1, tot.k / target));
+    var ringHtml =
+      '<div class="day-ring">' +
+        '<svg class="ring" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">' +
+          '<circle cx="32" cy="32" r="' + R + '" fill="none" stroke="var(--surface-2)" stroke-width="7"></circle>' +
+          '<circle class="ring-val" cx="32" cy="32" r="' + R + '" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-dasharray="' + CIRC.toFixed(1) + '" stroke-dashoffset="' + CIRC.toFixed(1) + '"></circle>' +
+        "</svg>" +
+        '<div><b>' + matchPct + "%</b><br><span>" + t("diet.ringLabel") + "</span></div>" +
+      "</div>";
+
     host.innerHTML =
       day.meals.map(mealCardHTML).join("") +
       '<div class="diet-totals">' +
+        ringHtml +
         '<div class="match-bar" title="' + matchPct + '%"><span style="width:' + barPct.toFixed(1) + '%"></span></div>' +
         '<div class="result-row"><span class="k">' + t("diet.dayTotal", { t: fmt0(target) }) + "</span>" +
           '<span class="v">' + fmt0(tot.k) + " kcal · " + matchPct + "%</span></div>" +
@@ -260,6 +275,19 @@
         '<div class="result-row"><span class="k">' + t("row.carbs") + '</span><span class="v">' + fmt0(tot.c) + " g</span></div>" +
         '<div class="result-row"><span class="k">' + t("row.fat") + '</span><span class="v">' + fmt0(tot.f) + " g</span></div>" +
       "</div>";
+
+    // animate the ring to the day's match percentage
+    var rv = host.querySelector(".ring-val");
+    if (rv) {
+      var off = (CIRC * (1 - clamped)).toFixed(1);
+      if (FitCalc.fx.disabled()) {
+        rv.style.strokeDashoffset = off;
+      } else {
+        window.requestAnimationFrame(function () {
+          window.requestAnimationFrame(function () { rv.style.strokeDashoffset = off; });
+        });
+      }
+    }
   }
 
   function renderChips() {

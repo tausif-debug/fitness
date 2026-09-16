@@ -1472,3 +1472,111 @@ html[data-theme="ocean"] {
 .journey-fill {
   background: linear-gradient(90deg, var(--accent-deep), var(--accent));
 }
+
+/* ============ Motion & graphics ============ */
+
+/* Ambient drifting glow orbs behind everything */
+.bg-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+}
+.bg-orb.a {
+  width: 46vw; height: 46vw; top: -12vw; right: -10vw;
+  background: radial-gradient(circle at 35% 35%, var(--accent-glow), transparent 65%);
+  animation: drift-a 26s ease-in-out infinite alternate;
+}
+.bg-orb.b {
+  width: 38vw; height: 38vw; bottom: -14vw; left: -8vw;
+  background: radial-gradient(circle at 60% 40%, var(--bg-glow-b), transparent 65%);
+  animation: drift-b 32s ease-in-out infinite alternate;
+}
+@keyframes drift-a {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-6vw, 8vh, 0) scale(1.15); }
+}
+@keyframes drift-b {
+  from { transform: translate3d(0, 0, 0) scale(1.1); }
+  to   { transform: translate3d(7vw, -6vh, 0) scale(0.95); }
+}
+.main-content, .site-footer { position: relative; z-index: 1; }
+
+/* Entrance motion */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+.route { animation: fade-up 0.45s ease both; }
+.calc-grid > a { animation: fade-up 0.5s ease both; }
+.calc-grid > a:nth-child(2) { animation-delay: 0.06s; }
+.calc-grid > a:nth-child(3) { animation-delay: 0.12s; }
+.calc-grid > a:nth-child(4) { animation-delay: 0.18s; }
+.calc-grid > a:nth-child(5) { animation-delay: 0.24s; }
+.calc-grid > a:nth-child(6) { animation-delay: 0.3s; }
+.calc-grid > a:nth-child(7) { animation-delay: 0.36s; }
+.meal-card { animation: fade-up 0.4s ease both; }
+.meal-card:nth-of-type(2) { animation-delay: 0.07s; }
+.meal-card:nth-of-type(3) { animation-delay: 0.14s; }
+.meal-card:nth-of-type(4) { animation-delay: 0.21s; }
+.lang-gate-card { animation: fade-up 0.5s ease both; }
+.lang-btn { animation: fade-up 0.55s ease both; }
+#lang-ur { animation-delay: 0.08s; }
+
+/* Brand glow pulse */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 24px var(--accent-glow); }
+  50%      { box-shadow: 0 0 42px var(--accent-glow), 0 0 10px var(--accent-glow); }
+}
+.brand-mark { animation: glow-pulse 3.2s ease-in-out infinite; }
+
+/* Data motion: markers, bars, cups */
+.gauge-marker {
+  transition: left 0.7s cubic-bezier(0.22, 0.9, 0.35, 1),
+    border-color 0.15s ease, color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+.split-bar span, .match-bar span { transition: width 0.7s cubic-bezier(0.22, 0.9, 0.35, 1); }
+.cup .fill { transition: height 0.55s ease; }
+
+/* Journey grow + milestone pops */
+@keyframes grow-x { from { transform: scaleX(0); } }
+.journey-fill {
+  transform-origin: left center;
+  animation: grow-x 0.9s cubic-bezier(0.22, 0.9, 0.35, 1) both;
+}
+@keyframes pop-in {
+  0%   { transform: scale(0); opacity: 0; }
+  70%  { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.journey-dot { animation: pop-in 0.45s ease both; }
+.journey-dot:nth-child(2) { animation-delay: 0.3s; }
+.journey-dot:nth-child(3) { animation-delay: 0.5s; }
+.journey-dot:nth-child(4) { animation-delay: 0.7s; }
+
+/* Nav tab icons */
+.nav-ic { display: inline-flex; margin-inline-end: 7px; vertical-align: -2px; opacity: 0.85; }
+.nav-ic svg { width: 14px; height: 14px; }
+
+/* Diet day progress ring */
+.day-ring {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 2px 0 10px;
+}
+.day-ring svg { transform: rotate(-90deg); flex: 0 0 auto; }
+.day-ring circle { transition: stroke-dashoffset 0.9s cubic-bezier(0.22, 0.9, 0.35, 1); }
+.day-ring b { font-size: 1.15rem; color: var(--accent); font-variant-numeric: tabular-nums; }
+.day-ring span { color: var(--text-dim); font-size: 0.82rem; }
+.meal-emoji { margin-inline-end: 7px; }
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

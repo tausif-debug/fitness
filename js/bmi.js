@@ -61,7 +61,7 @@
     $("bmi-empty").hidden = true;
     $("bmi-output").hidden = false;
 
-    $("bmi-value").textContent = bmi.toFixed(1);
+    FitCalc.fx.count($("bmi-value"), bmi, function (v) { return v.toFixed(1); });
     var catEl = $("bmi-category");
     catEl.textContent = t(cat.key);
     catEl.className = cat.cls;

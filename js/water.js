@@ -38,7 +38,18 @@
       fill.className = "fill";
       var remaining = totalMl - i * GLASS_ML;
       var frac = Math.max(0, Math.min(1, remaining / GLASS_ML));
-      fill.style.height = (frac * 100).toFixed(1) + "%";
+      var target = (frac * 100).toFixed(1) + "%";
+      fill.style.transitionDelay = (i * 45) + "ms";
+      if (FitCalc.fx.disabled()) {
+        fill.style.height = target;
+      } else {
+        fill.style.height = "0%";
+        (function (f, t) {
+          window.requestAnimationFrame(function () {
+            window.requestAnimationFrame(function () { f.style.height = t; });
+          });
+        })(fill, target);
+      }
       cup.appendChild(fill);
       row.appendChild(cup);
     }
@@ -74,7 +85,7 @@
     $("water-empty").hidden = true;
     $("water-output").hidden = false;
 
-    $("water-litres").textContent = (totalMl / 1000).toFixed(1);
+    FitCalc.fx.count($("water-litres"), totalMl / 1000, function (v) { return v.toFixed(1); });
     $("water-base").textContent = fmtMl(baseMl);
     $("water-workout-add").textContent =
       workoutMin > 0 ? t("water.trainVal", { ml: fmtMl(workoutMl).replace(" ml", ""), m: workoutMin }) : t("water.restDay");

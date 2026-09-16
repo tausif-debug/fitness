@@ -63,7 +63,7 @@
     $("steps-empty").hidden = true;
     $("steps-output").hidden = false;
 
-    $("steps-target").textContent = fmtInt(tg.target);
+    FitCalc.fx.count($("steps-target"), tg.target, fmtInt);
     $("steps-target-label").textContent =
       t(mode === "weightloss" ? "steps.labelWL" : "steps.labelHealth") +
       (p.age >= 60 ? t("steps.age60") : "");

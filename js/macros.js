@@ -32,7 +32,7 @@
   }
 
   function setMacro(prefix, grams, kcal, totalKcal) {
-    $(prefix + "-g").textContent = fmt0(grams);
+    FitCalc.fx.count($(prefix + "-g"), grams, fmt0);
     $(prefix + "-kcal").textContent = fmt0(kcal);
     $(prefix + "-pct").textContent = Math.round((kcal / totalKcal) * 100);
   }

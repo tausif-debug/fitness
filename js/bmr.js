@@ -91,9 +91,9 @@
     $("bmr-empty").hidden = true;
     $("bmr-output").hidden = false;
 
-    $("bmr-tdee").textContent = fmt0(tdee);
-    $("bmr-bmr").textContent = fmt0(bmr);
-    $("bmr-activity-burn").textContent = fmt0(tdee - bmr);
+    FitCalc.fx.count($("bmr-tdee"), tdee, fmt0);
+    FitCalc.fx.count($("bmr-bmr"), bmr, fmt0);
+    FitCalc.fx.count($("bmr-activity-burn"), tdee - bmr, fmt0);
 
     renderGoals(tdee, p.goal);
 
