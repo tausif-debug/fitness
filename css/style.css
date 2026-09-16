@@ -992,6 +992,27 @@ body {
   border-top: 1px dashed var(--border);
 }
 
+/* PDF report bar (overview) */
+.report-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: -12px 0 26px;
+}
+
+.report-btn {
+  width: auto;
+  padding: 12px 24px;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.report-note {
+  color: var(--text-faint);
+  font-size: 0.82rem;
+}
+
 /* ============ Footer ============ */
 
 .site-footer {

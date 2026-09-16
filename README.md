@@ -19,6 +19,8 @@ All calculations use fixed units: **weight in kg, height in inches**.
 
 **One profile, six calculators:** the user enters their stats once (sex, age, weight, height, activity level, goal, target weight, climate) in the **Profile** tab — saved to localStorage — and every calculator renders from that shared state automatically. Changing the profile live-updates all results. Derived links: activity level → training minutes for Water; goal + TDEE → macro calories and Timeline intake; goal → Steps mode.
 
+**PDF report:** once the profile is saved, the Overview shows a **Download PDF report** button that generates a complete report — profile, BMI, BMR & TDEE with all five calorie targets, macros at your goal calories, water, steps, and the goal-weight timeline — as a single A4 PDF, entirely client-side. The PDF engine (`js/pdf.js`) is hand-rolled: block layout, auto-pagination, xref assembly, Blob download. No libraries, no server, no build step.
+
 ## Run locally
 
 No build step. Either open `index.html` directly in a browser, or serve the folder:
@@ -50,7 +52,9 @@ fitness-calculator/
     ├── macros.js     # Macro split + prefill API for the send flow
     ├── water.js      # Water intake (ml/kg + training + climate)
     ├── steps.js      # Daily steps (age-based target + stride + calories)
-    └── timeline.js   # Goal weight timeline (rate, dates, milestones)
+    ├── timeline.js   # Goal weight timeline (rate, dates, milestones)
+    ├── pdf.js        # minimal PDF engine: layout, pagination, xref, Blob download
+    └── report.js     # collects all calculator results into PDF report blocks
 ```
 
 ## Formulas

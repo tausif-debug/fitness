@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FitCalc — Gym Fitness Calculators</title>
   <meta name="description" content="Enter your stats once — BMI, BMR & TDEE, macros, water intake, daily steps and goal timeline all calculate automatically." />
-  <link rel="stylesheet" href="css/style.css?v=7" />
+  <link rel="stylesheet" href="css/style.css?v=8" />
 </head>
 <body>
 
@@ -53,6 +53,16 @@
       <p class="page-subtitle">One profile, six calculators. Enter your stats <strong>once</strong> — everything below fills in automatically.</p>
 
       <div class="profile-status is-empty" id="profile-status"></div>
+
+      <div class="report-bar" id="report-bar" hidden>
+        <button type="button" class="btn-primary report-btn" id="report-download">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3v12M6 11l6 6 6-6M4 21h16"/>
+          </svg>
+          Download PDF report
+        </button>
+        <span class="report-note" id="report-msg">All six calculators in one PDF — generated from your profile.</span>
+      </div>
 
       <div class="calc-grid">
         <a class="calc-card is-live" href="#/bmi">
@@ -527,13 +537,15 @@
     </div>
   </footer>
 
-  <script src="js/app.js?v=7"></script>
-  <script src="js/profile.js?v=7"></script>
-  <script src="js/bmi.js?v=7"></script>
-  <script src="js/bmr.js?v=7"></script>
-  <script src="js/macros.js?v=7"></script>
-  <script src="js/water.js?v=7"></script>
-  <script src="js/steps.js?v=7"></script>
-  <script src="js/timeline.js?v=7"></script>
+  <script src="js/app.js?v=8"></script>
+  <script src="js/profile.js?v=8"></script>
+  <script src="js/bmi.js?v=8"></script>
+  <script src="js/bmr.js?v=8"></script>
+  <script src="js/macros.js?v=8"></script>
+  <script src="js/water.js?v=8"></script>
+  <script src="js/steps.js?v=8"></script>
+  <script src="js/timeline.js?v=8"></script>
+  <script src="js/pdf.js?v=8"></script>
+  <script src="js/report.js?v=8"></script>
 </body>
 </html>
