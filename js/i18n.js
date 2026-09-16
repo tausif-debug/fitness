@@ -29,6 +29,7 @@
     "gate.urSub":  ["اردو میں جاری رکھیں", "Continue in Urdu"],
     "header.tagline": ["Train smarter. Numbers first.", "سمارٹ ٹریننگ کریں۔ پہلے اعداد۔"],
     "switcher.title": ["Switch language", "زبان بدلیں"],
+    "switcher.theme": ["Switch theme", "تھیم بدلیں"],
     "footer.note":  ["FitCalc — educational tool, not medical advice.", "FitCalc — تعلیمی ٹول، طبی مشورہ نہیں۔"],
     "footer.credit": ["Developed by <strong>Tausif Rasool</strong>", "ڈویلپر: <strong>Tausif Rasool</strong>"],
 

@@ -41,13 +41,41 @@
     showRoute(currentRoute());
   }
 
+  /* ---- theme: heritage (emerald+gold, default) / volt classic ---- */
+  var THEME_KEY = "fitcalc-theme-v1";
+
+  function savedTheme() {
+    try {
+      var v = window.localStorage.getItem(THEME_KEY);
+      return (v === "volt" || v === "heritage") ? v : "heritage";
+    } catch (e) { return "heritage"; }
+  }
+
+  function applyTheme(th) {
+    document.documentElement.setAttribute("data-theme", th);
+    try { window.localStorage.setItem(THEME_KEY, th); } catch (e) {}
+  }
+
   window.addEventListener("hashchange", onHashChange);
   document.addEventListener("DOMContentLoaded", function () {
     onHashChange();
-    if (window.FitCalc && FitCalc.i18n) {
-      FitCalc.i18n.onChange(function () {
-        document.title = t("title." + currentRoute());
+    applyTheme(savedTheme());
+
+    var themeBtn = document.getElementById("theme-switch");
+    if (themeBtn) {
+      themeBtn.addEventListener("click", function () {
+        var cur = document.documentElement.getAttribute("data-theme");
+        applyTheme(cur === "heritage" ? "volt" : "heritage");
       });
+    }
+
+    if (window.FitCalc && FitCalc.i18n) {
+      var sync = function () {
+        document.title = t("title." + currentRoute());
+        if (themeBtn) themeBtn.title = t("switcher.theme");
+      };
+      sync();
+      FitCalc.i18n.onChange(sync);
     }
   });
 })();

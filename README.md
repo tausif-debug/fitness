@@ -22,6 +22,8 @@ All calculations use fixed units: **weight in kg, height in inches**.
 
 **One profile, six calculators:** the user enters their stats once (optional name, sex, age, weight, height, activity level, goal, target weight, climate) in the **Profile** tab — saved to localStorage — and every calculator renders from that shared state automatically. Changing the profile live-updates all results. Derived links: activity level → training minutes for Water; goal + TDEE → macro calories and Timeline intake; goal → Steps mode.
 
+**Themes:** two full looks, switched by the ◐ pill in the header and remembered in localStorage — **Heritage** (default): deep emerald canvas, gold accent, warm-white cards, the "Pakistan Green" concept; and **Volt Classic**: the original dark-charcoal + volt-green sporty theme. Both work in English and Urdu.
+
 **PDF report:** once the profile is saved, the Overview shows a **Download PDF report** button that generates a complete report — profile, BMI, BMR & TDEE with all five calorie targets, macros at your goal calories, water, steps, the goal-weight timeline, and the full 7-day diet plan — as a single A4 PDF, entirely client-side. If a name is set in the profile, the report is personalised ("Fitness Report for …"). The PDF engine (`js/pdf.js`) is hand-rolled: block layout, auto-pagination, xref assembly, Blob download. No libraries, no server, no build step.
 
 ## Run locally

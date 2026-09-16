@@ -1292,3 +1292,92 @@ html[dir="rtl"] .journey-track {
   .meal-card { padding: 12px 13px; }
   .food-line { font-size: 0.87rem; }
 }
+
+/* ============ Theme system ============ */
+/* Page-canvas tokens (text/chips that sit ON the page background) */
+:root {
+  --on-bg: #eef1f7;
+  --on-bg-dim: #9aa3b5;
+  --on-bg-faint: #6b7385;
+  --nav-bg: rgba(11, 13, 18, 0.88);
+  --header-tint: rgba(200, 255, 46, 0.04);
+  --bg-glow-a: rgba(200, 255, 46, 0.07);
+  --bg-glow-b: rgba(76, 195, 255, 0.05);
+  --tint-accent-soft: rgba(200, 255, 46, 0.07);
+}
+
+/* Heritage theme — emerald + gold (design concept 3b) */
+html[data-theme="heritage"] {
+  --bg: #0b3826;
+  --bg-soft: #f4f1e8;
+  --surface: #fdfbf6;
+  --surface-2: #efe9db;
+  --border: #e2dcc8;
+  --border-strong: #c9c0a6;
+  --text: #17362a;
+  --text-dim: #4d6a58;
+  --text-faint: #7c9081;
+  --accent: #c9a227;
+  --accent-deep: #a8841a;
+  --accent-ink: #241c05;
+  --accent-glow: rgba(201, 162, 39, 0.25);
+  --on-bg: #f2efe4;
+  --on-bg-dim: #c8dcc8;
+  --on-bg-faint: #9dbba4;
+  --nav-bg: rgba(9, 44, 31, 0.92);
+  --header-tint: rgba(201, 162, 39, 0.06);
+  --bg-glow-a: rgba(212, 175, 55, 0.10);
+  --bg-glow-b: rgba(122, 180, 140, 0.08);
+  --tint-accent-soft: rgba(201, 162, 39, 0.10);
+}
+
+/* Canvas: tokenised gradients + page-level text colour */
+body {
+  color: var(--on-bg);
+  background:
+    radial-gradient(900px 420px at 85% -10%, var(--bg-glow-a), transparent 60%),
+    radial-gradient(700px 380px at -10% 0%, var(--bg-glow-b), transparent 55%),
+    var(--bg);
+}
+.site-header { background: linear-gradient(180deg, var(--header-tint), transparent); }
+.site-nav { background: var(--nav-bg); }
+
+/* Text on the page canvas (light in both themes) */
+.page-title,
+.brand-text { color: var(--on-bg); }
+.page-subtitle,
+.brand-tagline,
+.site-footer p { color: var(--on-bg-dim); }
+.report-note { color: var(--on-bg-faint); }
+.nav-tab { color: var(--on-bg-dim); }
+.nav-tab:hover { color: var(--on-bg); }
+.nav-tab.is-active { color: var(--accent); }
+
+/* Card containers carry the in-card text colour */
+.panel,
+.calc-card,
+.meal-card,
+.panel-inset,
+.lang-gate-card { color: var(--text); }
+
+/* Accent tints follow the theme */
+.dev-credit {
+  background: linear-gradient(90deg, var(--tint-accent-soft), rgba(255, 255, 255, 0.05));
+  color: var(--on-bg);
+}
+.seg-option input:checked + span { background: var(--tint-accent-soft); }
+.goal-table tr.is-maint td { background: var(--tint-accent-soft); }
+
+/* Heritage-only touches */
+html[data-theme="heritage"] .journey-fill {
+  background: linear-gradient(90deg, var(--accent-deep), var(--accent));
+}
+html[data-theme="heritage"] .lang-switch {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: var(--on-bg);
+}
+html[data-theme="heritage"] .lang-switch:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
