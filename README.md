@@ -1,5 +1,7 @@
 # FitCalc 🏋️
 
+**Developed by Tausif Rasool**
+
 A dark, sporty fitness calculator webapp — **plain HTML/CSS/JS, zero dependencies**.
 
 All calculations use fixed units: **weight in kg, height in inches**.
